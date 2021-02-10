@@ -7,16 +7,15 @@ namespace MovieLibraryOO
     {
         private static void Main(string[] args)
         {
-            var mm = new MovieManager();
             var menu = new Menu();
 
-            var userSelection = menu.GetInput();
+            var userSelection = menu.GetMainMenuSelection();
 
             while (menu.IsValid)
             {
-                mm.Execute(userSelection);
+                menu.Process(userSelection);
 
-                userSelection = menu.GetInput();
+                userSelection = menu.GetMainMenuSelection();
             }
 
             Console.WriteLine("\nThanks for using the Movie Library!");
@@ -25,8 +24,9 @@ namespace MovieLibraryOO
 
     internal class Menu
     {
+        private readonly char _exitKey = 'X';
         private readonly List<char> _validChoices = new List<char> {'1', '2'};
-        private char _exitKey = 'X';
+        private MovieContext _context;
 
         public Menu()
         {
@@ -41,11 +41,11 @@ namespace MovieLibraryOO
             Console.WriteLine("2. Add Movie to list");
         }
 
-        public char GetInput()
+        public char GetMainMenuSelection()
         {
             IsValid = true;
 
-            Console.Write($"Select ({String.Join(',', _validChoices.ToArray())},{_exitKey})> ");
+            Console.Write($"Select ({string.Join(',', _validChoices.ToArray())},{_exitKey})> ");
             var key = Console.ReadKey().KeyChar;
             while (!_validChoices.Contains(key))
             {
@@ -54,21 +54,86 @@ namespace MovieLibraryOO
                     IsValid = false;
                     break;
                 }
+
                 Console.WriteLine();
                 Console.Write("Invalid, Please ");
-                Console.Write($"Select ({String.Join(',', _validChoices.ToArray())},{_exitKey})> ");
+                Console.Write($"Select ({string.Join(',', _validChoices.ToArray())},{_exitKey})> ");
                 key = Console.ReadKey().KeyChar;
             }
-            
+
             return key;
+        }
+
+        private Movie GetMovieDetails()
+        {
+            return new Movie {MovieId = 99999, Title = "Marvel Man", Genres = "Action"};
+        }
+
+        public void Process(char userSelection)
+        {
+            switch (userSelection)
+            {
+                case '1':
+                    // List movies
+                    _context = new MovieContext();
+                    _context.ListMovies();
+                    break;
+                case '2':
+                    // Ask user to enter movie details
+                    var movie = GetMovieDetails();
+                    _context = new MovieContext(movie);
+                    _context.AddMovie();
+                    break;
+            }
         }
     }
 
-    internal class MovieManager
+    internal class MovieContext
     {
-        public void Execute(char userSelection)
+        private readonly FileRepository _file;
+        private readonly Movie _movie;
+
+        public MovieContext(Movie movie = null)
         {
-            throw new NotImplementedException();
+            _file = new FileRepository();
+            _movie = movie;
+        }
+
+        public void AddMovie()
+        {
+            _file.Add(_movie);
+        }
+
+        public void ListMovies()
+        {
+            _file.GetAll();
+        }
+    }
+
+    internal class Movie
+    {
+        public int MovieId { get; set; }
+        public string Title { get; set; }
+        public string Genres { get; set; }
+    }
+
+    internal class FileRepository
+    {
+        public FileRepository()
+        {
+            // initialize file
+        }
+        public void Add(Movie movie)
+        {
+        }
+
+        public List<Movie> GetAll()
+        {
+            return new List<Movie>();
+        }
+
+        private void GetIdentity()
+        {
         }
     }
 }
