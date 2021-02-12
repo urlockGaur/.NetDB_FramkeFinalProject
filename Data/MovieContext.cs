@@ -1,4 +1,5 @@
-﻿using MovieLibraryOO.Models;
+﻿using System.Collections.Generic;
+using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO.Data
 {
@@ -18,9 +19,9 @@ namespace MovieLibraryOO.Data
             _file.Add(_movie);
         }
 
-        public void ListMovies()
+        public List<Movie> GetMovies()
         {
-            _file.GetAll();
+           return _file.GetAll();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleTables;
 using MovieLibraryOO.Data;
 using MovieLibraryOO.Models;
 
@@ -49,7 +50,7 @@ namespace MovieLibraryOO
 
         private Movie GetMovieDetails()
         {
-            return new Movie {MovieId = 99999, Title = "Marvel Man", Genres = "Action"};
+            return new Movie {Title = "Marvel Man", Genres = "Action"};
         }
 
         public void Process(char userSelection)
@@ -59,13 +60,15 @@ namespace MovieLibraryOO
                 case '1':
                     // List movies
                     _context = new MovieContext();
-                    _context.ListMovies();
+                    Console.WriteLine();
+                    ConsoleTable.From<Movie>(_context.GetMovies()).Write();
                     break;
                 case '2':
                     // Ask user to enter movie details
                     var movie = GetMovieDetails();
                     _context = new MovieContext(movie);
                     _context.AddMovie();
+                    Console.WriteLine($"\nYour movie {movie.Title} has been added!\n");
                     break;
             }
         }
