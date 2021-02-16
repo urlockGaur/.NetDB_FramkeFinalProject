@@ -6,13 +6,13 @@ using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO
 {
-    internal class Menu
+    public class Menu
     {
         private readonly char _exitKey = 'X';
         private readonly List<char> _validChoices = new List<char> {'1', '2'};
         private MovieContext _context;
 
-        public Menu()
+        public Menu() // default constructor
         {
             DisplayMenu();
         }
@@ -29,7 +29,7 @@ namespace MovieLibraryOO
         {
             IsValid = true;
 
-            Console.Write($"Select ({string.Join(',', _validChoices.ToArray())},{_exitKey})> ");
+            Console.Write($"Select ({string.Join(',', _validChoices)},{_exitKey})> ");
             var key = Console.ReadKey().KeyChar;
             while (!_validChoices.Contains(key))
             {
@@ -48,8 +48,9 @@ namespace MovieLibraryOO
             return key;
         }
 
-        private Movie GetMovieDetails()
+        public Movie GetMovieDetails()
         {
+            // get input from user
             return new Movie {Title = "Marvel Man", Genres = "Action"};
         }
 
