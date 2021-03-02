@@ -8,7 +8,7 @@ using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO.Data
 {
-    internal class FileRepository
+    public class FileRepository : IRepository
     {
 
         private readonly string _filename = Path.Combine(Environment.CurrentDirectory, "Files", "movies.csv");
@@ -20,12 +20,12 @@ namespace MovieLibraryOO.Data
         public void Add(Movie movie)
         {
             var movies = GetAll();
-            
+
             var lastMovie = movies.OrderBy(o => o.MovieId).Last();
             movie.MovieId = lastMovie.MovieId + 1;
 
-            movies.Add(movie); 
-            
+            movies.Add(movie);
+
             using (var writer = new StreamWriter(_filename))
             {
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))

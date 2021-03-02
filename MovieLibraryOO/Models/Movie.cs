@@ -2,7 +2,16 @@
 
 namespace MovieLibraryOO.Models
 {
-    public class Movie
+
+    public abstract class Media {
+        string Id {get;set;}
+
+        public void Display() {
+            // concrete implementation
+        }
+    }
+
+    public class Movie : Media
     {
         public int MovieId { get; set; }
         public string Title { get; set; }

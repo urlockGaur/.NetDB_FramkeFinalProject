@@ -6,14 +6,17 @@ using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO
 {
-    public class Menu
+
+    public class Menu : IMenu
     {
         private readonly char _exitKey = 'X';
-        private readonly List<char> _validChoices = new List<char> {'1', '2'};
-        private MovieContext _context;
+        private readonly List<char> _validChoices = new List<char> { '1', '2' };
+        private IContext _context;
 
-        public Menu() // default constructor
+        public Menu(IContext context) // default constructor
         {
+            _context = context;
+
             DisplayMenu();
         }
 
@@ -51,7 +54,7 @@ namespace MovieLibraryOO
         public Movie GetMovieDetails()
         {
             // get input from user
-            return new Movie {Title = "Marvel Man", Genres = "Action"};
+            return new Movie { Title = "Marvel Man", Genres = "Action" };
         }
 
         public void Process(char userSelection)
@@ -60,15 +63,13 @@ namespace MovieLibraryOO
             {
                 case '1':
                     // List movies
-                    _context = new MovieContext();
                     Console.WriteLine();
                     ConsoleTable.From<Movie>(_context.GetMovies()).Write();
                     break;
                 case '2':
                     // Ask user to enter movie details
                     var movie = GetMovieDetails();
-                    _context = new MovieContext(movie);
-                    _context.AddMovie();
+                    _context.AddMovie(movie);
                     Console.WriteLine($"\nYour movie {movie.Title} has been added!\n");
                     break;
             }

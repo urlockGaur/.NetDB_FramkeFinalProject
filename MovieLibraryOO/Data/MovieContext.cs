@@ -3,25 +3,23 @@ using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO.Data
 {
-    internal class MovieContext
+    public class MovieContext : IContext
     {
-        private readonly FileRepository _file;
-        private readonly Movie _movie;
+        private readonly IRepository _repository;
 
-        public MovieContext(Movie movie = null)
+        public MovieContext(IRepository repository)
         {
-            _file = new FileRepository();
-            _movie = movie;
+            _repository = repository;
         }
 
-        public void AddMovie()
+        public void AddMovie(Movie movie)
         {
-            _file.Add(_movie);
+            _repository.Add(movie);
         }
 
         public List<Movie> GetMovies()
         {
-           return _file.GetAll();
+            return _repository.GetAll();
         }
     }
 }
