@@ -4,7 +4,7 @@ using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO.Data
 {
-    public class MyNewRepository : IRepository
+    public class JsonRepository : IRepository
     {
         public void Add(Movie movie)
         {
