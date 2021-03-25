@@ -53,23 +53,21 @@ namespace MovieLibraryOO.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MovieId = table.Column<int>(type: "int", nullable: false),
-                    GenreId = table.Column<int>(type: "int", nullable: false),
-                    MovieId1 = table.Column<long>(type: "bigint", nullable: true),
-                    GenreId1 = table.Column<long>(type: "bigint", nullable: true)
+                    MovieId = table.Column<long>(type: "bigint", nullable: true),
+                    GenreId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MovieGenres", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MovieGenres_Genres_GenreId1",
-                        column: x => x.GenreId1,
+                        name: "FK_MovieGenres_Genres_GenreId",
+                        column: x => x.GenreId,
                         principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MovieGenres_Movies_MovieId1",
-                        column: x => x.MovieId1,
+                        name: "FK_MovieGenres_Movies_MovieId",
+                        column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -126,14 +124,14 @@ namespace MovieLibraryOO.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovieGenres_GenreId1",
+                name: "IX_MovieGenres_GenreId",
                 table: "MovieGenres",
-                column: "GenreId1");
+                column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovieGenres_MovieId1",
+                name: "IX_MovieGenres_MovieId",
                 table: "MovieGenres",
-                column: "MovieId1");
+                column: "MovieId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserMovies_MovieId",

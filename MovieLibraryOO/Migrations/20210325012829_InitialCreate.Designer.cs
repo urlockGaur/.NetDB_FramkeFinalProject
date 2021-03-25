@@ -10,7 +10,7 @@ using MovieLibraryOO.Context;
 namespace MovieLibraryOO.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20210325004034_InitialCreate")]
+    [Migration("20210325012829_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,23 +61,17 @@ namespace MovieLibraryOO.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("GenreId1")
+                    b.Property<long?>("GenreId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("MovieId1")
+                    b.Property<long?>("MovieId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenreId1");
+                    b.HasIndex("GenreId");
 
-                    b.HasIndex("MovieId1");
+                    b.HasIndex("MovieId");
 
                     b.ToTable("MovieGenres");
                 });
@@ -155,11 +149,11 @@ namespace MovieLibraryOO.Migrations
                 {
                     b.HasOne("MovieLibraryOO.DataModels.Genre", "Genre")
                         .WithMany("MovieGenres")
-                        .HasForeignKey("GenreId1");
+                        .HasForeignKey("GenreId");
 
                     b.HasOne("MovieLibraryOO.DataModels.Movie", "Movie")
                         .WithMany("MovieGenres")
-                        .HasForeignKey("MovieId1");
+                        .HasForeignKey("MovieId");
 
                     b.Navigation("Genre");
 
