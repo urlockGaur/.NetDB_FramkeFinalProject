@@ -1,15 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Remove="Files\movies-backup.csv" />
-    <None Remove="Files\movies.csv" />
+    <None Remove="Files\movies-backup.csv"/>
+    <None Remove="Files\movies.csv"/>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Files\movies-backup.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -18,11 +15,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="ConsoleTables" Version="2.4.2" />
-    <PackageReference Include="CsvHelper" Version="22.1.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="ConsoleTables" Version="2.4.2"/>
+    <PackageReference Include="CsvHelper" Version="22.1.2"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4"/>
   </ItemGroup>
-
 </Project>
