@@ -3,11 +3,11 @@ using MovieLibraryOO.Models;
 
 namespace MovieLibraryOO.Data
 {
-    public class MovieContext : IContext
+    public class MovieContext2 : IContext
     {
         private readonly IRepository _repository;
 
-        public MovieContext(IRepository repository)
+        public MovieContext2(IRepository repository)
         {
             _repository = repository;
         }
