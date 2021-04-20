@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using MovieLibraryOO.Models;
+using Newtonsoft.Json;
 
 namespace MovieLibraryOO.Data
 {
@@ -13,7 +14,8 @@ namespace MovieLibraryOO.Data
 
         public List<Movie> GetAll()
         {
-            throw new System.NotImplementedException();
+            List<Movie> movies = JsonConvert.DeserializeObject<List<Movie>>("{ title: Sample }");
+            return movies;
         }
     }
 }
