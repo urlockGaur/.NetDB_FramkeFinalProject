@@ -118,6 +118,38 @@ namespace MovieLibraryOO
                 }
             }
 
+            using (var db = new MovieContext()) { 
+
+                // build user object (not database)
+                var user = db.Users.FirstOrDefault(u=>u.Id==944);
+                var movie = db.Movies.FirstOrDefault(m=>m.Title == "asdfasdf");
+
+                // var user =  new User() {
+                //     Age = 32,
+                //     Gender = "M",
+                //     ZipCode = "53186"
+                // };
+
+                // build user/movie relationship object (not database)
+                var userMovie = new UserMovie() {
+                    Rating = 2,
+                    RatedAt = DateTime.Now
+                };
+                var userMovies = new List<UserMovie>();
+                userMovies.Add(userMovie);
+                
+                // set up the database relationships
+                // user.UserMovies = userMovies;
+                userMovie.User = user;
+                userMovie.Movie = movie;
+
+                // db.Users.Add(user);
+                db.UserMovies.Add(userMovie);
+
+                // commit
+                db.SaveChanges();
+
+            }
 
             // // DEPENDENCY INJECTION
             // var serviceProvider = new ServiceCollection()
