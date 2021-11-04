@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,14 +15,14 @@ namespace MovieLibraryOO
         {
 
             // cRud - READ
-            // System.Console.WriteLine("Enter Occupation Name: ");
-            // var occ = Console.ReadLine();
+            System.Console.WriteLine("Enter Occupation Name: ");
+            var occ = Console.ReadLine();
 
-            // using (var db = new MovieContext())
-            // {
-            //     var occupation = db.Occupations.FirstOrDefault(x => x.Name == occ);
-            //     System.Console.WriteLine($"({occupation.Id}) {occupation.Name}");
-            // }
+            using (var db = new MovieContext())
+            {
+                var occupation = db.Occupations.FirstOrDefault(x => x.Name == occ);
+                System.Console.WriteLine($"({occupation.Id}) {occupation.Name}");
+            }
 
             // Crud - CREATE
             // System.Console.WriteLine("Enter NEW Occupation Name: ");
@@ -105,51 +106,52 @@ namespace MovieLibraryOO
             // }
 
             // Display genres for a movie
-            using (var db = new MovieContext())
-            {
-                var movie = db.Movies.Include(x=>x.MovieGenres).ThenInclude(x=>x.Genre)
-                    .FirstOrDefault(movie=>movie.Title.Contains("Babe"));
-                System.Console.WriteLine($"Movie: {movie.Title} {movie.ReleaseDate.ToString("MM-dd-yyyy")}");
+            // using (var db = new MovieContext())
+            // {
+            //     var movie = db.Movies.Include(x=>x.MovieGenres).ThenInclude(x=>x.Genre)
+            //         .FirstOrDefault(movie=>movie.Title.Contains("Babe"));
+            //     System.Console.WriteLine($"Movie: {movie.Title} {movie.ReleaseDate.ToString("MM-dd-yyyy")}");
 
-                System.Console.WriteLine("Genres:");
-                foreach (var genre in movie.MovieGenres) 
-                {
-                    System.Console.WriteLine($"\t{genre.Genre.Name}");
-                }
-            }
+            //     System.Console.WriteLine("Genres:");
+            //     foreach (var genre in movie.MovieGenres) 
+            //     {
+            //         System.Console.WriteLine($"\t{genre.Genre.Name}");
+            //     }
+            // }
 
-            using (var db = new MovieContext()) { 
+            // Add userMovie
+            // using (var db = new MovieContext()) { 
 
-                // build user object (not database)
-                var user = db.Users.FirstOrDefault(u=>u.Id==944);
-                var movie = db.Movies.FirstOrDefault(m=>m.Title == "asdfasdf");
+            //     // build user object (not database)
+            //     var user = db.Users.FirstOrDefault(u=>u.Id==944);
+            //     var movie = db.Movies.FirstOrDefault(m=>m.Title == "asdfasdf");
 
-                // var user =  new User() {
-                //     Age = 32,
-                //     Gender = "M",
-                //     ZipCode = "53186"
-                // };
+            //     // var user =  new User() {
+            //     //     Age = 32,
+            //     //     Gender = "M",
+            //     //     ZipCode = "53186"
+            //     // };
 
-                // build user/movie relationship object (not database)
-                var userMovie = new UserMovie() {
-                    Rating = 2,
-                    RatedAt = DateTime.Now
-                };
-                var userMovies = new List<UserMovie>();
-                userMovies.Add(userMovie);
+            //     // build user/movie relationship object (not database)
+            //     var userMovie = new UserMovie() {
+            //         Rating = 2,
+            //         RatedAt = DateTime.Now
+            //     };
+            //     var userMovies = new List<UserMovie>();
+            //     userMovies.Add(userMovie);
                 
-                // set up the database relationships
-                // user.UserMovies = userMovies;
-                userMovie.User = user;
-                userMovie.Movie = movie;
+            //     // set up the database relationships
+            //     // user.UserMovies = userMovies;
+            //     userMovie.User = user;
+            //     userMovie.Movie = movie;
 
-                // db.Users.Add(user);
-                db.UserMovies.Add(userMovie);
+            //     // db.Users.Add(user);
+            //     db.UserMovies.Add(userMovie);
 
-                // commit
-                db.SaveChanges();
+            //     // commit
+            //     db.SaveChanges();
 
-            }
+            // }
 
             // // DEPENDENCY INJECTION
             // var serviceProvider = new ServiceCollection()

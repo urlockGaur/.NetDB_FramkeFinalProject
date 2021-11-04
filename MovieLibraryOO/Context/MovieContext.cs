@@ -15,7 +15,7 @@ namespace MovieLibraryOO.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
                 // optionsBuilder.UseLazyLoadingProxies().UseSqlServer(@"Server=bitsql.wctc.edu;Database=mmcarthey_22097_Movie;User ID=mmcarthey;Password=000075813;");
-                optionsBuilder.UseSqlServer(@"Server=bitsql.wctc.edu;Database=mmcarthey_22097_Movie;User ID=mmcarthey;Password=000075813;");
+                optionsBuilder.UseSqlServer(@"Server=bitsql.wctc.edu;Database=mmcarthey_12090_Movie;User ID=mmcarthey;Password=000075813;");
         }
     }
 }
