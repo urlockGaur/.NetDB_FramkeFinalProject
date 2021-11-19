@@ -9,12 +9,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ConsoleTables" Version="2.4.2"/>
-    <PackageReference Include="CsvHelper" Version="22.1.2"/>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.4"/>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ConsoleTables" Version="2.4.2" />
+    <PackageReference Include="CsvHelper" Version="22.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.4" />
   </ItemGroup>
 </Project>
