@@ -144,6 +144,29 @@ using (var db = new MovieContext())
 
 }
 
+// Get user movie rating details
+using (var db = new MovieContext())
+{
+    var users = db.Users;
+    //.Include(x => x.Occupation)
+    //.Include(x => x.UserMovies)
+    //.ThenInclude(x => x.Movie);
+
+    var limitedUsers = users.Take(10);
+
+    Console.WriteLine("The users are :");
+    foreach (var user in limitedUsers.ToList())
+    {
+        Console.WriteLine($"User: {user.Id} {user.Gender} {user.ZipCode}");
+        Console.WriteLine($"Occupation: {user.Occupation.Name}");
+        Console.WriteLine($"Rated Movies:");
+        foreach (var userMovie in user.UserMovies)
+        {
+            Console.WriteLine(userMovie.Movie.Title);
+        }
+    }
+}
+
 // DEPENDENCY INJECTION
 var serviceProvider = new ServiceCollection()
     .AddSingleton<IRepository, FileRepository>()
