@@ -9,11 +9,15 @@ namespace MovieLibraryEntities.Dao
         private readonly IDbContextFactory<MovieContext> _contextFactory;
         private readonly MovieContext _context;
 
-        public Repository(IDbContextFactory<MovieContext> contextFactory)
+        public Repository(MovieContext dbContext)
         {
-            _contextFactory = contextFactory;
-            _context = _contextFactory.CreateDbContext();
+            _context = dbContext;
         }
+        //public Repository(IDbContextFactory<MovieContext> contextFactory)
+        //{
+        //    _contextFactory = contextFactory;
+        //    _context = _contextFactory.CreateDbContext();
+        //}
 
         public void Dispose()
         {
