@@ -39,22 +39,26 @@ public class MovieContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var userDetails = new List<UserDetail>();
+        // This can be a way to generate some 'fake' data for the new UserDetails table
+        // Note that it must be commented out if you're running more migrations because the 'Faker' class
+        // randomly generates new data which will cause more migrations to be generated every time.
 
-        for (var i = 1; i <= 943; i++)
-        {
-            userDetails.Add(new UserDetail
-            {
-                Id = i,
-                FirstName = Faker.Name.FirstName(),
-                LastName = Faker.Name.LastName(),
-                StreetAddress = Faker.Address.StreetAddress(),
-                City = Faker.Address.City(),
-                State = Faker.Address.StateAbbr(),
-                UserId = i
-            });
-        }
+        //var userDetails = new List<UserDetail>();
 
-        modelBuilder.Entity<UserDetail>().HasData(userDetails);
+        //for (var i = 1; i <= 943; i++)
+        //{
+        //    userDetails.Add(new UserDetail
+        //    {
+        //        Id = i,
+        //        FirstName = Faker.Name.FirstName(),
+        //        LastName = Faker.Name.LastName(),
+        //        StreetAddress = Faker.Address.StreetAddress(),
+        //        City = Faker.Address.City(),
+        //        State = Faker.Address.StateAbbr(),
+        //        UserId = i
+        //    });
+        //}
+
+        //modelBuilder.Entity<UserDetail>().HasData(userDetails);
     }
 }
