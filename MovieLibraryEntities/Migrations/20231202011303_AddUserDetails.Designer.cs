@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieLibraryEntities.Context;
 
@@ -11,9 +12,10 @@ using MovieLibraryEntities.Context;
 namespace MovieLibraryOO.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    partial class MovieContextModelSnapshot : ModelSnapshot
+    [Migration("20231202011303_AddUserDetails")]
+    partial class AddUserDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("MovieLibraryEntities.Models.Movie", b =>
@@ -56,7 +58,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("MovieLibraryEntities.Models.MovieGenre", b =>
@@ -79,7 +81,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("MovieGenres", (string)null);
+                    b.ToTable("MovieGenres");
                 });
 
             modelBuilder.Entity("MovieLibraryEntities.Models.Occupation", b =>
@@ -96,7 +98,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Occupations", (string)null);
+                    b.ToTable("Occupations");
                 });
 
             modelBuilder.Entity("MovieLibraryEntities.Models.User", b =>
@@ -130,7 +132,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasIndex("UserDetailId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MovieLibraryEntities.Models.UserDetail", b =>
@@ -166,7 +168,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserDetails", (string)null);
+                    b.ToTable("UserDetails");
 
                     b.HasData(
                         new
@@ -9627,7 +9629,7 @@ namespace MovieLibraryOO.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserMovies", (string)null);
+                    b.ToTable("UserMovies");
                 });
 
             modelBuilder.Entity("MovieLibraryEntities.Models.MovieGenre", b =>

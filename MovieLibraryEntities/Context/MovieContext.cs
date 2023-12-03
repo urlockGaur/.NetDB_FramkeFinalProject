@@ -1,3 +1,4 @@
+using FakerDotNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,12 +13,14 @@ public class MovieContext : DbContext
     public DbSet<MovieGenre> MovieGenres { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Occupation> Occupations { get; set; }
+    public DbSet<UserDetail> UserDetails { get; set; }
     public DbSet<UserMovie> UserMovies { get; set; }
     public DbSet<User> Users { get; set; }
 
-    public MovieContext(ILogger<MovieContext> logger)
+    public MovieContext()
     {
-        _logger = logger;
+        var factory = LoggerFactory.Create(b => b.AddConsole());
+        _logger = factory.CreateLogger<MovieContext>();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,7 +33,28 @@ public class MovieContext : DbContext
         optionsBuilder
             .LogTo(action => _logger.LogInformation(action), LogLevel.Information)
             //.EnableSensitiveDataLogging()
-            .UseSqlServer(configuration.GetConnectionString("MovieContext")
+            .UseSqlServer(configuration.GetConnectionString("MovieContext"), builder => builder.EnableRetryOnFailure()
             );
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        var userDetails = new List<UserDetail>();
+
+        for (var i = 1; i <= 943; i++)
+        {
+            userDetails.Add(new UserDetail
+            {
+                Id = i,
+                FirstName = Faker.Name.FirstName(),
+                LastName = Faker.Name.LastName(),
+                StreetAddress = Faker.Address.StreetAddress(),
+                City = Faker.Address.City(),
+                State = Faker.Address.StateAbbr(),
+                UserId = i
+            });
+        }
+
+        modelBuilder.Entity<UserDetail>().HasData(userDetails);
     }
 }
