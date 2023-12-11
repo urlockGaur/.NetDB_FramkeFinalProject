@@ -44,7 +44,7 @@ namespace MovieLibraryOO.Services
                         _fileService.Read();
                         _fileService.Display();
                         break;
-                    case Menu.MenuOptions.Add:
+                    case Menu.MenuOptions.AddMovie:
                         _logger.LogInformation("Adding a new movie");
                         //menu.GetUserInput();
                         break;

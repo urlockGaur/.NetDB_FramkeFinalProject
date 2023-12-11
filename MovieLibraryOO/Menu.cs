@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Spectre.Console;
 
 namespace MovieLibraryOO
@@ -12,12 +14,23 @@ namespace MovieLibraryOO
         {
             ListFromDb,
             ListFromFile,
-            Add,
+            AddMovie,
             Update,
             Delete,
             Search,
             Exit
         }
+
+        private static readonly Dictionary<MenuOptions, string> ReadableDisplayNames = new Dictionary<MenuOptions, string>
+        {
+            { MenuOptions.ListFromDb,"List from Database"  },
+            { MenuOptions.ListFromFile,"List from File"  },
+            { MenuOptions.AddMovie,"Add Movie"  },
+            { MenuOptions.Update,"Update"  },
+            { MenuOptions.Delete,"Delete"  },
+            { MenuOptions.Search,"Search"  },
+            { MenuOptions.Exit,"Exit"  }
+        };
 
         public Menu() // default constructor
         {
@@ -27,12 +40,14 @@ namespace MovieLibraryOO
         {
             var menuOptions = Enum.GetNames(typeof(MenuOptions));
 
+            var choices = ReadableDisplayNames.Values.ToArray();
+
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    .Title("Choose your [green]menu action[/]?")
-                    .AddChoices(menuOptions));
+                    .Title("Choose your [green]menu action[/]:")
+                    .AddChoices(choices));
 
-            return (MenuOptions) Enum.Parse(typeof(MenuOptions), choice);
+            return (MenuOptions) Enum.Parse(typeof(MenuOptions), menuOptions[Array.IndexOf(choices, choice)]);
         }
 
         public void Exit()
