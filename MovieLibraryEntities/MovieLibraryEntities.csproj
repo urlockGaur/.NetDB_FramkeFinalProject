@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="Migrations\Data\1-InsertGenres.sql" />
     <None Remove="Migrations\Data\2-InsertMovies.sql" />
     <None Remove="Migrations\Data\3-InsertOccupations.sql" />
@@ -25,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\Data\1-InsertGenres.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -73,12 +77,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Faker.Net" Version="2.0.154" />
     <PackageReference Include="FakerDotNet" Version="1.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

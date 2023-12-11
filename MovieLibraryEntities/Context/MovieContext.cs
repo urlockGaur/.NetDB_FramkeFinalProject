@@ -31,10 +31,10 @@ public class MovieContext : DbContext
             .Build();
 
         optionsBuilder
-            .LogTo(action => _logger.LogInformation(action), LogLevel.Information)
-            //.EnableSensitiveDataLogging()
-            .UseSqlServer(configuration.GetConnectionString("MovieContext"), builder => builder.EnableRetryOnFailure()
-            );
+            .UseLazyLoadingProxies()
+            .UseSqlServer(
+            configuration.GetConnectionString("MovieContext")
+        );
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
