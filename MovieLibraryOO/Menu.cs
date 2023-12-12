@@ -23,12 +23,15 @@ namespace MovieLibraryOO
 
         private static readonly Dictionary<MenuOptions, string> ReadableDisplayNames = new Dictionary<MenuOptions, string>
         {
-            { MenuOptions.ListFromDb,"List from Database"  },
+            { MenuOptions.ListFromDb,"Display Movie List"  },
             { MenuOptions.ListFromFile,"List from File"  },
-            { MenuOptions.AddMovie,"Add Movie"  },
-            { MenuOptions.Update,"Update"  },
-            { MenuOptions.Delete,"Delete"  },
-            { MenuOptions.Search,"Search"  },
+            { MenuOptions.AddMovie,"Add New Movie"  },
+            { MenuOptions.UpdateMovie,"Update Movie Data"  },
+            { MenuOptions.DeleteMovie,"Delete Movie"  },
+            { MenuOptions.SearchMovie,"Search for Movie"  },
+            { MenuOptions.AddUser, "Add New User" },
+            { MenuOptions.RateMovie, "Rate Movie" },
+            { MenuOptions.ListTopRatedMovie, "Display Top Rated" },
             { MenuOptions.Exit,"Exit"  }
         };
 
