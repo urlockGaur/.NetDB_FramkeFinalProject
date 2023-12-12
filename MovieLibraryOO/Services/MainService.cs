@@ -14,9 +14,9 @@ namespace MovieLibraryOO.Services
         private readonly IMovieMapper _movieMapper;
         private readonly IRepository _repository;
         private readonly IFileService _fileService;
-        private readonly MovieService _movieService;
+        private readonly IMovieService _movieService;
 
-        public MainService(ILogger<MainService> logger, IMovieMapper movieMapper, IRepository repository, IFileService fileService, MovieService movieService)
+        public MainService(ILogger<MainService> logger, IMovieMapper movieMapper, IRepository repository, IFileService fileService, IMovieService movieService)
         {
             _logger = logger;
             _movieMapper = movieMapper;
@@ -37,7 +37,7 @@ namespace MovieLibraryOO.Services
                 switch (menuChoice)
                 {
                     case Menu.MenuOptions.ListFromDb:
-                        _logger.LogInformation("Listing movies from database");
+                        _logger.LogInformation("Display All Movies");
                         var allMovies = _repository.GetAll();
                         var movies = _movieMapper.Map(allMovies);
                         ConsoleTable.From<MovieDto>(movies).Write();
@@ -51,11 +51,11 @@ namespace MovieLibraryOO.Services
                         _movieService.AddNewMovieMenu();
                         //menu.GetUserInput();
                         break;
-                    case Menu.MenuOptions.Update:
+                    case Menu.MenuOptions.UpdateMovie:
                         _logger.LogInformation("Updating an Existing Movie");
                         _movieService.UpdateMovieMenu();
                         break;
-                    case Menu.MenuOptions.Delete:
+                    case Menu.MenuOptions.DeleteMovie:
                         _logger.LogInformation("Deleting a Movie");
                         _movieService.DeleteMovieMenu();
                         break;

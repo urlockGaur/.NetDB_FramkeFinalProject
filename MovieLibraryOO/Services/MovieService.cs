@@ -79,7 +79,7 @@ namespace MovieLibraryOO.Services
                 {
                     var updatedMovie = _repository.UpdateMovie(movieIdToUpdate, updatedTitle, updatedReleaseDate);
 
-                    if(updatedMovie != null)
+                    if (updatedMovie != null)
                     {
                         Console.WriteLine("Movie updated successfully: ");
                         _repository.MovieDetails(updatedMovie);
@@ -88,17 +88,17 @@ namespace MovieLibraryOO.Services
                     {
                         Console.WriteLine("Movie could not be updated. Please review the input and try again");
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid date format. Please enter the release date in the correct format (YYYY-MM-DD) ");
-                    }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Movie Id. Please enter a valid numberic Movie Id.");
+                    Console.WriteLine("Invalid date format. Please enter the release date in the correct format (YYYY-MM-DD) ");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Invalid Movie Id. Please enter a valid numberic Movie Id.");
+            }
             }
         }
     }
-}
 

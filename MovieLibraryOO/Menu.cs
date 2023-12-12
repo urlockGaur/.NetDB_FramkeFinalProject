@@ -15,8 +15,8 @@ namespace MovieLibraryOO
             ListFromDb,
             ListFromFile,
             AddMovie,
-            Update,
-            Delete,
+            UpdateMovie,
+            DeleteMovie,
             Search,
             Exit
         }
@@ -27,7 +27,7 @@ namespace MovieLibraryOO
             { MenuOptions.ListFromFile,"List from File"  },
             { MenuOptions.AddMovie,"Add New Movie"  },
             { MenuOptions.UpdateMovie,"Update Movie Data"  },
-            { MenuOptions.DeleteMovie,"Delete Movie"  },
+            { MenuOptions.DeleteMovie,"Delete a Movie"  },
             { MenuOptions.SearchMovie,"Search for Movie"  },
             { MenuOptions.AddUser, "Add New User" },
             { MenuOptions.RateMovie, "Rate Movie" },
