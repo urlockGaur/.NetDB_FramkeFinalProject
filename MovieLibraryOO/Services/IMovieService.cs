@@ -10,6 +10,7 @@ namespace MovieLibraryOO.Services
     {
         void AddNewMovieMenu();
         void DeleteMovieMenu();
-        public void UpdateMovieMenu();
+        void UpdateMovieMenu();
+        void SearchMovieMenu();
     }
 }

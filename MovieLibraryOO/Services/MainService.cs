@@ -41,11 +41,7 @@ namespace MovieLibraryOO.Services
                         var allMovies = _repository.GetAll();
                         var movies = _movieMapper.Map(allMovies);
                         ConsoleTable.From<MovieDto>(movies).Write();
-                        break;
-                    case Menu.MenuOptions.ListFromFile:
-                        _fileService.Read();
-                        _fileService.Display();
-                        break;
+                        break;                 
                     case Menu.MenuOptions.AddMovie:
                         _logger.LogInformation("Adding a New Movie");
                         _movieService.AddNewMovieMenu();
@@ -59,12 +55,9 @@ namespace MovieLibraryOO.Services
                         _logger.LogInformation("Deleting a Movie");
                         _movieService.DeleteMovieMenu();
                         break;
-                    case Menu.MenuOptions.Search:
+                    case Menu.MenuOptions.SearchMovie:
                         _logger.LogInformation("Searching for a movie");
-                        var userSearchTerm = menu.GetUserResponse("Enter your", "search string:", "green");
-                        var searchedMovies = _repository.Search(userSearchTerm);
-                        movies = _movieMapper.Map(searchedMovies);
-                        ConsoleTable.From<MovieDto>(movies).Write();
+                        _movieService.SearchMovieMenu();
                         break;
                 }
             }

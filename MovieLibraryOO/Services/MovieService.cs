@@ -1,4 +1,5 @@
-﻿using MovieLibraryEntities.Dao;
+﻿using Microsoft.Extensions.Logging;
+using MovieLibraryEntities.Dao;
 using MovieLibraryEntities.Models;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace MovieLibraryOO.Services
 {
-    public class MovieService
+    public class MovieService : IMovieService
     {
         private readonly IRepository _repository;
+        private readonly ILogger _logger;
 
-        public MovieService(IRepository repository)
+        public MovieService(IRepository repository, ILogger<MovieService> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         public void AddNewMovieMenu()
@@ -34,20 +37,20 @@ namespace MovieLibraryOO.Services
                 if (movie != null)
                 {
                     Console.Write($"Movie added: ");
-                    
+
                     Console.WriteLine($"Title: {movie.Title} | Release Date: {movie.ReleaseDate}");
-                    
+
                 }
                 else
                 {
                     Console.WriteLine("Could not add the movie. Please review the input and try again.");
-                    
+
                 }
             }
             else
             {
                 Console.WriteLine("Invalid date formate. Please enter the release date in the correct format (YYYY-MM-DD).");
-                
+
             }
         }
 
@@ -98,7 +101,40 @@ namespace MovieLibraryOO.Services
             {
                 Console.WriteLine("Invalid Movie Id. Please enter a valid numberic Movie Id.");
             }
+        }
+
+        public void SearchMovieMenu()
+        {
+            ConsoleColor textColor = Console.ForegroundColor;
+            Console.WriteLine("Search by Movie Title");
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Please enter your search terms: ");
+            Console.ForegroundColor = textColor;
+            var searchTerm = Console.ReadLine();
+
+            var movies = _repository.Search(searchTerm);
+
+            if (movies.Any())
+            {
+                Console.WriteLine("Search Results: ");
+
+                foreach (var movie in movies)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Title: {movie.Title} Release Date: {movie.ReleaseDate}");
+                    Console.ForegroundColor = textColor;
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                _logger.LogInformation("Movie not found. Please check your input and try again.");
+                Console.ForegroundColor = textColor;
             }
         }
     }
+}
 
