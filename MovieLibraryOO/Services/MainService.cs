@@ -47,15 +47,16 @@ namespace MovieLibraryOO.Services
                         _fileService.Display();
                         break;
                     case Menu.MenuOptions.AddMovie:
-                        _logger.LogInformation("Adding a new movie");
+                        _logger.LogInformation("Adding a New Movie");
                         _movieService.AddNewMovieMenu();
                         //menu.GetUserInput();
                         break;
                     case Menu.MenuOptions.Update:
-                        _logger.LogInformation("Updating an existing movie");
+                        _logger.LogInformation("Updating an Existing Movie");
+                        _movieService.UpdateMovieMenu();
                         break;
                     case Menu.MenuOptions.Delete:
-                        _logger.LogInformation("Deleting a movie");
+                        _logger.LogInformation("Deleting a Movie");
                         _movieService.DeleteMovieMenu();
                         break;
                     case Menu.MenuOptions.Search:

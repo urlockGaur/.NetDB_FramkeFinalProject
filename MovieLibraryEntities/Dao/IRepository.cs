@@ -7,6 +7,8 @@ namespace MovieLibraryEntities.Dao
         IEnumerable<Movie> GetAll();
         IEnumerable<Movie> Search(string searchString);
 
+         void MovieDetails(Movie movie);
+
         Movie AddMovie(string title, DateTime releaseDate);
 
         void DeleteMovie(long movieIdDelete);

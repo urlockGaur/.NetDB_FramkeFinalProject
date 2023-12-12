@@ -38,7 +38,7 @@ namespace MovieLibraryEntities.Dao
 
         // ========================================================
         // =Helper Method=
-        private void MovieDetails(Movie movie)
+        public void MovieDetails(Movie movie)
         {
             Console.WriteLine($"Movie Details: ");
             Console.WriteLine($"Title: {movie.Title}");
