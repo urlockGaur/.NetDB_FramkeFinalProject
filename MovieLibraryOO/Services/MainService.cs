@@ -14,13 +14,15 @@ namespace MovieLibraryOO.Services
         private readonly IMovieMapper _movieMapper;
         private readonly IRepository _repository;
         private readonly IFileService _fileService;
+        private readonly MovieService _movieService;
 
-        public MainService(ILogger<MainService> logger, IMovieMapper movieMapper, IRepository repository, IFileService fileService)
+        public MainService(ILogger<MainService> logger, IMovieMapper movieMapper, IRepository repository, IFileService fileService, MovieService movieService)
         {
             _logger = logger;
             _movieMapper = movieMapper;
             _repository = repository;
             _fileService = fileService;
+            _movieService = movieService;
         }
 
         public void Invoke()
@@ -46,6 +48,7 @@ namespace MovieLibraryOO.Services
                         break;
                     case Menu.MenuOptions.AddMovie:
                         _logger.LogInformation("Adding a new movie");
+                        _movieService.AddNewMovieMenu();
                         //menu.GetUserInput();
                         break;
                     case Menu.MenuOptions.Update:
@@ -53,6 +56,7 @@ namespace MovieLibraryOO.Services
                         break;
                     case Menu.MenuOptions.Delete:
                         _logger.LogInformation("Deleting a movie");
+                        _movieService.DeleteMovieMenu();
                         break;
                     case Menu.MenuOptions.Search:
                         _logger.LogInformation("Searching for a movie");
