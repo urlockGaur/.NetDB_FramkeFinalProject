@@ -121,7 +121,7 @@ namespace MovieLibraryEntities.Dao
 
         // ========================================================
         // =Base Requirement=
-        // =Updating a movie=
+        // =Updating a Movie=
         public Movie UpdateMovie(long movieId, string updatedMovieTitle, DateTime updatedReleaseDate)
         {
             var movieToUpdate = GetById(movieId);
@@ -153,12 +153,14 @@ namespace MovieLibraryEntities.Dao
 
         // ========================================================
         // =Base Requirement=
-        // =Displaying movies to a list=
+        // =Displaying Movies to a List=
         public IEnumerable<Movie> GetAllMovies()
         {
             return _context.Movies.ToList();
         }
-
+        // ========================================================
+        // =Base Requirement=
+        // =Searching for Movie=
         public IEnumerable<Movie> Search(string searchString)
         {
             var allMovies = _context.Movies;

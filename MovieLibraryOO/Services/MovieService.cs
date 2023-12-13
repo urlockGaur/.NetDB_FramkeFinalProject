@@ -81,26 +81,38 @@ namespace MovieLibraryOO.Services
                 Console.WriteLine("Enther the new Release Date of the movie (YYYY-MM-DD");
                 if (DateTime.TryParse(Console.ReadLine(), out DateTime updatedReleaseDate))
                 {
-                    var updatedMovie = _repository.UpdateMovie(movieIdToUpdate, updatedTitle, updatedReleaseDate);
+                    try
+                    {
+                        var updatedMovie = _repository.UpdateMovie(movieIdToUpdate, updatedTitle, updatedReleaseDate);
 
-                    if (updatedMovie != null)
-                    {
-                        Console.WriteLine("Movie updated successfully: ");
-                        _repository.MovieDetails(updatedMovie);
+                        if (updatedMovie != null)
+                        {
+                            _logger.LogInformation("Movie updated");
+                            var successMessage = new Markup("[green]Movie updated successfully: [/]");
+                            AnsiConsole.MarkupLine(successMessage.ToString());
+                            _repository.MovieDetails(updatedMovie);
+                        }
+                        else
+                        {
+                            var errorMessage = new Markup("[red]Movie could not be updated. Please review the input and try again.[/]");
+                            AnsiConsole.MarkupLine(errorMessage.ToString());
+                        }
                     }
-                    else
+                    catch
                     {
-                        Console.WriteLine("Movie could not be updated. Please review the input and try again");
+                        _logger.LogError("Error occurred in the UpdateMovieMenu.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invalid date format. Please enter the release date in the correct format (YYYY-MM-DD) ");
+                    var errorMessage = new Markup("[red]Invalid date format. Please enter the release date in the correct format (YYYY-MM-DD).[/]");
+                    AnsiConsole.MarkupLine(errorMessage.ToString());
                 }
             }
             else
             {
-                Console.WriteLine("Invalid Movie Id. Please enter a valid numberic Movie Id.");
+                var errorMessage = new Markup("[red]Invalid Movie Id. Please enter a valid numberic Movie Id.[/]");
+                AnsiConsole.MarkupLine(errorMessage.ToString());
             }
         }
 
@@ -122,6 +134,7 @@ namespace MovieLibraryOO.Services
 
                 if (movies.Any())
                 {
+                    _logger.LogInformation("Displaying Search Results");
                     var successMessage = new Markup("[green]Search Results: [/]");
                     AnsiConsole.MarkupLine(successMessage.ToString());
 
