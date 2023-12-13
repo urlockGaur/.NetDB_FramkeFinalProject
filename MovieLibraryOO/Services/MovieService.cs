@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Spectre.Console;
 
 namespace MovieLibraryOO.Services
 {
@@ -105,34 +106,93 @@ namespace MovieLibraryOO.Services
 
         public void SearchMovieMenu()
         {
-            ConsoleColor textColor = Console.ForegroundColor;
-            Console.WriteLine("Search by Movie Title");
-            Console.WriteLine("----------------------------------------------");
-            Console.WriteLine();
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Please enter your search terms: ");
-            Console.ForegroundColor = textColor;
-            var searchTerm = Console.ReadLine();
-
-            var movies = _repository.Search(searchTerm);
-
-            if (movies.Any())
+            try
             {
-                Console.WriteLine("Search Results: ");
 
-                foreach (var movie in movies)
+                Console.WriteLine("Search by Movie Title");
+                Console.WriteLine("----------------------------------------------");
+                Console.WriteLine();
+
+
+                Console.WriteLine("Please enter your search terms: ");
+
+                var searchTerm = Console.ReadLine();
+
+                var movies = _repository.Search(searchTerm);
+
+                if (movies.Any())
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Title: {movie.Title} Release Date: {movie.ReleaseDate}");
-                    Console.ForegroundColor = textColor;
+                    var successMessage = new Markup("[green]Search Results: [/]");
+                    AnsiConsole.MarkupLine(successMessage.ToString());
+
+                    foreach (var movie in movies)
+                    {
+                        var movieDetails = new Markup($"Title: [green]{movie.Title}[/] [green]Release Date: [/]{movie.ReleaseDate}");
+                        AnsiConsole.MarkupLine(successMessage.ToString());
+
+                    }
+                }
+                else
+                {
+                    var errorMessage = new Markup("[red]Movie not found. Please check your input and try again.[/]");
+                    AnsiConsole.MarkupLine(errorMessage.ToString());
+
                 }
             }
-            else
+            catch
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                _logger.LogInformation("Movie not found. Please check your input and try again.");
-                Console.ForegroundColor = textColor;
+                _logger.LogError("Error occurred in the SearchMovieMenu method. ");
+                var errorMessage = new Markup("[red]An error while searching for the movie. Please try again...[/]");
+                AnsiConsole.MarkupLine(errorMessage.ToString());
+
+            }
+        }
+
+        public void DisplayMovieLibraryMenu()
+        {
+            try
+            {
+                Console.WriteLine("Movie Library List: ");
+                Console.WriteLine("----------------------------------------------");
+                Console.WriteLine();
+
+                var movieList = _repository.GetAllMovies();
+                if (movieList.Any())
+                {
+                    AnsiConsole.MarkupLine("[green]");
+                    int moviesPerPage = 10;
+
+                    for (int i = 0; i < movieList.Count(); i += moviesPerPage)
+                    {
+                        var moviesGroup = movieList.Skip(i).Take(moviesPerPage);
+
+                        foreach (var movie in moviesGroup)
+                        {
+                            string genre = string.Join(", ", movie.MovieGenres.Select(x => x.Genre.Name));
+                            AnsiConsole.WriteLine($"Id: {movie.Id} | Title: {movie.Title} | Release Date: {movie.ReleaseDate.ToString("MM/dd/yyy")} | Genres: {genre} ");
+
+                        }
+                        AnsiConsole.WriteLine();
+                        AnsiConsole.WriteLine("Press enter to view more movies or type 'exit' to stop...");
+                        var userInput = Console.ReadLine();
+
+                        if (userInput.ToLower() == "exit")
+                        {
+                            AnsiConsole.Clear();
+                            break;
+                        }
+                        AnsiConsole.Clear();
+                    }
+                              
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in DisplayMovieLibaryMenu");
+
+                AnsiConsole.Foreground = Color.Red;
+                AnsiConsole.WriteLine($"Error occurred: {ex.Message}");
+                AnsiConsole.ResetColors();
             }
         }
     }

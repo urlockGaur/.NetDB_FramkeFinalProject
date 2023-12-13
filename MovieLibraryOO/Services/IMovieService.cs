@@ -12,5 +12,6 @@ namespace MovieLibraryOO.Services
         void DeleteMovieMenu();
         void UpdateMovieMenu();
         void SearchMovieMenu();
+        void DisplayMovieLibraryMenu();
     }
 }

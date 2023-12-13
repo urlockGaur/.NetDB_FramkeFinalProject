@@ -36,11 +36,9 @@ namespace MovieLibraryOO.Services
 
                 switch (menuChoice)
                 {
-                    case Menu.MenuOptions.ListFromDb:
-                        _logger.LogInformation("Display All Movies");
-                        var allMovies = _repository.GetAll();
-                        var movies = _movieMapper.Map(allMovies);
-                        ConsoleTable.From<MovieDto>(movies).Write();
+                    case Menu.MenuOptions.DisplayMovieLibrary:
+                        _logger.LogInformation("Displaying Movie Library");
+                        _movieService.DisplayMovieLibraryMenu();
                         break;                 
                     case Menu.MenuOptions.AddMovie:
                         _logger.LogInformation("Adding a New Movie");

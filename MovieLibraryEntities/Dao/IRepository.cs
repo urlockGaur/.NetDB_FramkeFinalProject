@@ -4,7 +4,7 @@ namespace MovieLibraryEntities.Dao
 {
     public interface IRepository
     {
-        IEnumerable<Movie> GetAll();
+        IEnumerable<Movie> GetAllMovies();
         IEnumerable<Movie> Search(string searchString);
 
          void MovieDetails(Movie movie);

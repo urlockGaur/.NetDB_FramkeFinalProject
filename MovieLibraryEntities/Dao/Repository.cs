@@ -24,10 +24,7 @@ namespace MovieLibraryEntities.Dao
             _context.Dispose();
         }
 
-        public IEnumerable<Movie> GetAll()
-        {
-            return _context.Movies.ToList();
-        }
+        
 
         // ========================================================
         // =Helper Method=
@@ -154,8 +151,13 @@ namespace MovieLibraryEntities.Dao
             }
         }
 
-
-
+        // ========================================================
+        // =Base Requirement=
+        // =Displaying movies to a list=
+        public IEnumerable<Movie> GetAllMovies()
+        {
+            return _context.Movies.ToList();
+        }
 
         public IEnumerable<Movie> Search(string searchString)
         {

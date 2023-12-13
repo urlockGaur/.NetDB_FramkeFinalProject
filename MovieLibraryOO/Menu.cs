@@ -12,7 +12,7 @@ namespace MovieLibraryOO
     {
         public enum MenuOptions
         {
-            ListFromDb,
+            DisplayMovieLibrary,
             AddMovie,
             UpdateMovie,
             DeleteMovie,
@@ -25,11 +25,10 @@ namespace MovieLibraryOO
 
         private static readonly Dictionary<MenuOptions, string> ReadableDisplayNames = new Dictionary<MenuOptions, string>
         {
-            { MenuOptions.ListFromDb,"Display Movie List"  },
-            //{ MenuOptions.ListFromFile,"List from File"  },
+            { MenuOptions.DisplayMovieLibrary,"Display Movie Library"  },         
             { MenuOptions.AddMovie,"Add New Movie"  },
             { MenuOptions.UpdateMovie,"Update Movie Data"  },
-            { MenuOptions.DeleteMovie,"Delete a Movie"  },
+            { MenuOptions.DeleteMovie,"Delete Movie"  },
             { MenuOptions.SearchMovie,"Search for Movie"  },
             { MenuOptions.AddUser, "Add New User" },
             { MenuOptions.RateMovie, "Rate Movie" },
