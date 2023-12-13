@@ -23,50 +23,68 @@ namespace MovieLibraryOO.Services
 
         public void AddNewMovieMenu()
         {
-            Console.WriteLine("Please enter the Title of the movie you want to add: ");
-            var movieTitle = Console.ReadLine();
-            Console.WriteLine();
+            try {
+                Console.WriteLine("Please enter the Title of the movie you want to add: ");
+                var movieTitle = Console.ReadLine();
+                Console.WriteLine();
 
-            Console.WriteLine("Please enter the Release Date of the movie (YYYY-MM-DD): ");
-            Console.WriteLine();
+                Console.WriteLine("Please enter the Release Date of the movie (YYYY-MM-DD): ");
+                Console.WriteLine();
 
-            if (DateTime.TryParse(Console.ReadLine(), out DateTime releaseDate))
-            {
-                //calling AddMovie() from repository class
-                var movie = _repository.AddMovie(movieTitle, releaseDate);
-
-                if (movie != null)
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime releaseDate))
                 {
-                    Console.Write($"Movie added: ");
+                    //calling AddMovie() from repository class
+                    var movie = _repository.AddMovie(movieTitle, releaseDate);
 
-                    Console.WriteLine($"Title: {movie.Title} | Release Date: {movie.ReleaseDate}");
+                    if (movie != null)
+                    {
+                        _logger.LogInformation("Movie successfully added to database!");
+                        AnsiConsole.Write("[green]Movie added: [/]");
 
+                        AnsiConsole.WriteLine($"[green]Title:[/] {movie.Title} | [green]Release Date:[/] {movie.ReleaseDate}");
+
+                    }
+                    else
+                    {
+                        AnsiConsole.WriteLine("[red]Could not add the movie. Please review the input and try again.[/]");
+
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Could not add the movie. Please review the input and try again.");
+                    AnsiConsole.WriteLine("[red]Invalid date formate. Please enter the release date in the correct format (YYYY-MM-DD).[/]");
 
                 }
             }
-            else
+            catch (Exception ex) 
             {
-                Console.WriteLine("Invalid date formate. Please enter the release date in the correct format (YYYY-MM-DD).");
-
+                _logger.LogError(ex, "Error occurred in AddNewMovieMenu");
+                AnsiConsole.WriteLine($"[red]An error occurred: {ex.Message}[/]");
             }
         }
 
         public void DeleteMovieMenu()
         {
-            Console.WriteLine("Enter the Id of the movie you want to delete: ");
-            var deleteInput = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Enter the Id of the movie you want to delete: ");
+                var deleteInput = Console.ReadLine();
 
-            if (long.TryParse(deleteInput, out long movieIdDelete))
-            {
-                _repository.DeleteMovie(movieIdDelete);
+                if (long.TryParse(deleteInput, out long movieIdDelete))
+                {
+                    _repository.DeleteMovie(movieIdDelete);
+                }
+                else
+                {
+                    _logger.LogError("Invalid Id input");
+                    AnsiConsole.WriteLine("[red]Invalid Id input. Please enter a valid Movie Id.[/]");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Invalid input. Please enter a valid Movie Id.");
+                _logger.LogError(ex, "Movie was not deleted...");
+                AnsiConsole.WriteLine("[red]An error occured in the DeleteMovieMenu.[/]");
+                
             }
         }
 
@@ -87,15 +105,15 @@ namespace MovieLibraryOO.Services
 
                         if (updatedMovie != null)
                         {
-                            _logger.LogInformation("Movie updated");
-                            var successMessage = new Markup("[green]Movie updated successfully: [/]");
-                            AnsiConsole.MarkupLine(successMessage.ToString());
+                            _logger.LogInformation("Movie updated!");
+                            AnsiConsole.WriteLine("[green]Movie updated successfully: [/]");
                             _repository.MovieDetails(updatedMovie);
                         }
                         else
                         {
-                            var errorMessage = new Markup("[red]Movie could not be updated. Please review the input and try again.[/]");
-                            AnsiConsole.MarkupLine(errorMessage.ToString());
+                            _logger.LogError("Movie was not updated...");
+                            AnsiConsole.WriteLine("[red]Movie could not be updated. Please review the input and try again.[/]");
+                            
                         }
                     }
                     catch
@@ -105,14 +123,14 @@ namespace MovieLibraryOO.Services
                 }
                 else
                 {
-                    var errorMessage = new Markup("[red]Invalid date format. Please enter the release date in the correct format (YYYY-MM-DD).[/]");
-                    AnsiConsole.MarkupLine(errorMessage.ToString());
+                    AnsiConsole.WriteLine("[red]Invalid date format. Please enter the release date in the correct format (YYYY-MM-DD).[/]");
+                    
                 }
             }
             else
             {
-                var errorMessage = new Markup("[red]Invalid Movie Id. Please enter a valid numberic Movie Id.[/]");
-                AnsiConsole.MarkupLine(errorMessage.ToString());
+                AnsiConsole.WriteLine("[red]Invalid Movie Id. Please enter a valid numberic Movie Id.[/]");
+                
             }
         }
 
@@ -135,28 +153,28 @@ namespace MovieLibraryOO.Services
                 if (movies.Any())
                 {
                     _logger.LogInformation("Displaying Search Results");
-                    var successMessage = new Markup("[green]Search Results: [/]");
-                    AnsiConsole.MarkupLine(successMessage.ToString());
+                    AnsiConsole.WriteLine("[green]Search Results: [/]");
+                    
 
                     foreach (var movie in movies)
                     {
-                        var movieDetails = new Markup($"Title: [green]{movie.Title}[/] [green]Release Date: [/]{movie.ReleaseDate}");
-                        AnsiConsole.MarkupLine(successMessage.ToString());
+                        AnsiConsole.WriteLine($"Title: [green]{movie.Title}[/] [green]Release Date: [/]{movie.ReleaseDate}");
+                        
 
                     }
                 }
                 else
                 {
-                    var errorMessage = new Markup("[red]Movie not found. Please check your input and try again.[/]");
-                    AnsiConsole.MarkupLine(errorMessage.ToString());
+                     AnsiConsole.WriteLine("[red]Movie not found. Please check your input and try again.[/]");
+                    
 
                 }
             }
             catch
             {
                 _logger.LogError("Error occurred in the SearchMovieMenu method. ");
-                var errorMessage = new Markup("[red]An error while searching for the movie. Please try again...[/]");
-                AnsiConsole.MarkupLine(errorMessage.ToString());
+                AnsiConsole.WriteLine("[red]An error while searching for the movie. Please try again...[/]");
+                
 
             }
         }
@@ -202,10 +220,8 @@ namespace MovieLibraryOO.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred in DisplayMovieLibaryMenu");
-
-                AnsiConsole.Foreground = Color.Red;
-                AnsiConsole.WriteLine($"Error occurred: {ex.Message}");
-                AnsiConsole.ResetColors();
+                var errorMessage = $"[red]Error occurred: {ex.Message}[/]";
+                AnsiConsole.MarkupLine(errorMessage);
             }
         }
     }
