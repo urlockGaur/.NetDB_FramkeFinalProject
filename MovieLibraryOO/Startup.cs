@@ -32,7 +32,7 @@ public class Startup
         services.AddSingleton<IMovieMapper, MovieMapper>();
         services.AddDbContextFactory<MovieContext>();
         services.AddAutoMapper(typeof(MovieProfile));
-        services.AddTransient<IMovieService, MovieService>();
+        services.AddTransient<IMenuService, MenuService>();
 
         RegisterExceptionHandler();
 

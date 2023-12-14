@@ -81,11 +81,9 @@ namespace MovieLibraryEntities.Dao
             if (movieDelete != null)
             {
                 MovieDetails(movieDelete);
-                ConsoleColor textColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
 
                 Console.WriteLine($"Are you sure you want to delete {movieDelete.Title}: y / n ");
-                Console.ForegroundColor = textColor;
+
                 var deleteConfirmationInput = Console.ReadLine();
                 if (deleteConfirmationInput.ToLower() == "y")
                 {
@@ -230,7 +228,7 @@ namespace MovieLibraryEntities.Dao
         // ========================================================
         // =B Level Requirement=
         // =Ask User to enter rating on existing movie - Display details = user, rated movie, rating=
-        public UserMovie AddUserRating(long userId, long movieId, long rating)
+        public UserMovie AddUserRating(long userId, long Id, long rating)
         {
             var userRating = new UserMovie
             {
@@ -242,7 +240,7 @@ namespace MovieLibraryEntities.Dao
             {
                 //grab User and Movie entities
                 var user = _context.Users.FirstOrDefault(u => u.Id == userId);
-                var movie = _context.Movies.FirstOrDefault(u => u.Id == movieId);
+                var movie = _context.Movies.FirstOrDefault(u => u.Id == Id);
 
                 if (user != null && movie != null)
                 {
@@ -271,71 +269,125 @@ namespace MovieLibraryEntities.Dao
         // =Ask User to enter rating on existing movie - Display details = user, rated movie, rating=
         public void DisplayUserMovieRating(long userId, long movieId)
         {
-            var userMovieRating = _context.UserMovies.Include(u => u.User)
+            var userMovieRating = _context.UserMovies
+                .Include(u => u.User)
                 .Include(u => u.Movie)
-                .FirstOrDefault(u => u.Id == userId && u.Movie.Id == movieId);
+                .FirstOrDefault(u => u.User.Id == userId && u.Movie.Id == movieId);
 
             if (userMovieRating != null)
             {
                 Console.WriteLine("User Details: ");
                 Console.WriteLine("-------------------------");
-                Console.WriteLine($"User Id: {userMovieRating.User.UserDetail.UserId}");
-                Console.WriteLine($"Age: {userMovieRating.User.Age}");
-                Console.WriteLine($"Occupation: {userMovieRating.User.Occupation}");
+
+                // Check if User is not null before accessing properties
+                if (userMovieRating.User != null)
+                {
+                    Console.WriteLine($"User Id: {userMovieRating.User.Id}");
+                    Console.WriteLine($"Age: {userMovieRating.User.Age}");
+                    Console.WriteLine($"Occupation: {userMovieRating.User.Occupation.Name}");
+                }
+                else
+                {
+                    Console.WriteLine("User details not available.");
+                }
+
                 Console.WriteLine("-------------------------");
 
                 Console.WriteLine();
 
                 Console.WriteLine("Movie Details: ");
                 Console.WriteLine("-------------------------");
-                Console.WriteLine($"Title: {userMovieRating.Movie.Title}");
-                Console.WriteLine($"Release Date: {userMovieRating.Movie.ReleaseDate}");
-                Console.WriteLine($"Rating: {userMovieRating.Rating}");
-                Console.WriteLine($"Rated At: {userMovieRating.RatedAt.ToString("MM/dd/yyyy HH:mm:ss")}");
-                Console.WriteLine("-------------------------");
 
-            }
-            else { Console.WriteLine("User movie rating not found...");
-
-            }
-        }
-
-        // ========================================================
-        // =A Level Requirement=
-        // =List top rated movie by age bracket or occupation - Sort alphabetically and by rating and display just the first movie=
-        public List<(long Age, Movie TopRatedMovie)> GetTopRatedMoviesByAge()
-        {
-            var topRateMoviesByAge = _context.UserMovies
-                .Include(u => u.Movie)
-                .Include(u => u.User)
-                .GroupBy(u => u.User.Age)
-                .Select(u => new
+                // Check if Movie is not null before accessing properties
+                if (userMovieRating.Movie != null)
                 {
-                    Age = u.Key,
-                    TopRatedMovie = u.OrderByDescending(u  => u.Rating).Select(u => u.Movie).FirstOrDefault()
-                })
-                .ToList();
-            return topRateMoviesByAge.Select(movie => (movie.Age, movie.TopRatedMovie)).ToList();
+                    Console.WriteLine($"Title: {userMovieRating.Movie.Title}");
+                    Console.WriteLine($"Release Date: {userMovieRating.Movie.ReleaseDate.ToString("MM/dd/yyyy") ?? "N/A"}");
+                    Console.WriteLine($"New Rating: {userMovieRating.Rating}");
+                }
+                else
+                {
+                    Console.WriteLine("Movie details not available.");
+                }
+
+                Console.WriteLine("-------------------------");
+            }
+            else
+            {
+                Console.WriteLine($"User movie rating not found for userId: {userId} and movieId: {movieId}");
+            }
         }
 
         // ========================================================
         // =A Level Requirement=
         // =List top rated movie by age bracket or occupation - Sort alphabetically and by rating and display just the first movie=
-        public List<(string Occupation, Movie TopRatedMovie)> GetTopRatedMoviesByOccupation()
+        public List<(string AgeBracket, Movie TopRatedMovie, long Rating)> GetTopRatedMoviesByAge()
         {
-            var topRateMoviesByOccupation = _context.UserMovies
+            var ageBrackets = new List<(long minAge, long maxAge, string AgeBracket)>
+    {
+        (0, 17, "Under 18"),
+        (18, 24, "18-24"),
+        (25, 34, "25-34"),
+        (35, 44, "35-44"),
+        (45, 54, "45-54"),
+        (55, long.MaxValue, "55+"),
+    };
+
+            var results = ageBrackets
+                .Select(bracket => (
+                    AgeBracket: bracket.AgeBracket,
+                    TopRatedMovie: _context.UserMovies
+                        .Include(u => u.Movie)
+                        .Include(u => u.User)
+                        .Where(u => u.User.Age >= bracket.minAge && u.User.Age <= bracket.maxAge)
+                        .OrderByDescending(u => u.Rating)
+                        .Select(u => u.Movie)
+                        .FirstOrDefault(),
+                    Rating: _context.UserMovies
+                        .Where(u => u.User.Age >= bracket.minAge && u.User.Age <= bracket.maxAge)
+                        .OrderByDescending(u => u.Rating)
+                        .Select(u => u.Rating)
+                        .FirstOrDefault()
+                ))
+                .ToList();
+
+            // Log information for debugging
+            foreach (var result in results)
+            {
+                Console.WriteLine($"AgeBracket: {result.AgeBracket}, TopRatedMovie: {result.TopRatedMovie?.Title}, Rating: {result.Rating}");
+            }
+
+            return results;
+        }
+
+        // ========================================================
+        // =A Level Requirement=
+        // =List top rated movie by age bracket or occupation - Sort alphabetically and by rating and display just the first movie=
+        public List<(string Occupation, Movie TopRatedMovie, long Rating)> GetTopRatedMoviesByOccupation()
+        {
+            var topRatedMoviesByOccupation = _context.UserMovies
                 .Include(u => u.Movie)
                 .Include(u => u.User.Occupation)
                 .GroupBy(u => u.User.Occupation.Name)
                 .Select(u => new
                 {
                     Occupation = u.Key,
-                    TopRatedMovie = u.OrderByDescending(u => u.Rating).Select(u => u.Movie).FirstOrDefault()
+                    TopRatedMovie = u.OrderByDescending(x => x.Rating).Select(x => x.Movie).FirstOrDefault(),
+                    Rating = u.Max(x => x.Rating),
                 })
                 .ToList();
-            return topRateMoviesByOccupation.Select(movie => (movie.Occupation, movie.TopRatedMovie)).ToList();
-        }
 
+            // Add null checks before accessing properties
+            var results = topRatedMoviesByOccupation
+                .Select(movie => (
+                    Occupation: movie?.Occupation ?? "Unknown",
+                    TopRatedMovie: movie?.TopRatedMovie,
+                    Rating: movie?.Rating ?? 0
+                ))
+                .ToList();
+
+            return results;
+        }
     }
 }
 

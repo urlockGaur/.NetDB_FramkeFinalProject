@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovieLibraryEntities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MovieLibraryOO.Services
 {
-    public interface IMovieService
+    public interface IMenuService
     {
         void AddNewMovieMenu();
         void DeleteMovieMenu();
@@ -16,6 +17,10 @@ namespace MovieLibraryOO.Services
         void AddNewUserMenu();
         void DisplayUserDetailsMenu(long userId);
 
-        public void AddUserRatingMenu();
+        void AddUserRatingMenu();
+
+        void DisplayMovieRatingsMenu();
+
+        void DisplayTopRatedMovies(List<(Occupation Occupation, Movie TopRatedMovie, long Rating)> topRatedMovies);
     }
 }

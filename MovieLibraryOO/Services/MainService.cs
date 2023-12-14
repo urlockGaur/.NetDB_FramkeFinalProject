@@ -14,15 +14,15 @@ namespace MovieLibraryOO.Services
         private readonly IMovieMapper _movieMapper;
         private readonly IRepository _repository;
         private readonly IFileService _fileService;
-        private readonly IMovieService _movieService;
+        private readonly IMenuService _menuService;
 
-        public MainService(ILogger<MainService> logger, IMovieMapper movieMapper, IRepository repository, IFileService fileService, IMovieService movieService)
+        public MainService(ILogger<MainService> logger, IMovieMapper movieMapper, IRepository repository, IFileService fileService, IMenuService menuService)
         {
             _logger = logger;
             _movieMapper = movieMapper;
             _repository = repository;
             _fileService = fileService;
-            _movieService = movieService;
+            _menuService = menuService;
         }
 
         public void Invoke()
@@ -36,31 +36,39 @@ namespace MovieLibraryOO.Services
 
                 switch (menuChoice)
                 {
-                    case Menu.MenuOptions.DisplayMovieLibrary:
-                        _logger.LogInformation("Displaying Movie Library");
-                        _movieService.DisplayMovieLibraryMenu();
-                        break;                 
-                    case Menu.MenuOptions.AddMovie:
-                        _logger.LogInformation("Adding a N=new Movie");
-                        _movieService.AddNewMovieMenu();
-                        //menu.GetUserInput();
+                    case Menu.MenuOptions.AddUser:
+                        _logger.LogInformation("Adding a new User.");
+                        _menuService.AddNewUserMenu();
                         break;
+                    case Menu.MenuOptions.AddMovie:
+                        _logger.LogInformation("Adding a New Movie");
+                        _menuService.AddNewMovieMenu();
+                        break;                                                        
                     case Menu.MenuOptions.UpdateMovie:
                         _logger.LogInformation("Updating an existing Movie");
-                        _movieService.UpdateMovieMenu();
+                        _menuService.UpdateMovieMenu();
+                        break;                    
+                    case Menu.MenuOptions.SearchMovie:
+                        _logger.LogInformation("Searching for a movie");
+                        _menuService.SearchMovieMenu();
+                        break;
+                    case Menu.MenuOptions.DisplayMovieLibrary:
+                        _logger.LogInformation("Displaying Movie Library");
+                        _menuService.DisplayMovieLibraryMenu();
+                        break;
+                    case Menu.MenuOptions.RateMovie:
+                        _logger.LogInformation("Rating a Movie");
+                        _menuService.AddUserRatingMenu();
+                        break;
+                    case Menu.MenuOptions.ListTopRatedMovie:
+                        _logger.LogInformation("Displaying Top Rated Movies by Age or Occupation.");
+                        _menuService.DisplayMovieRatingsMenu();
                         break;
                     case Menu.MenuOptions.DeleteMovie:
                         _logger.LogInformation("Deleting a Movie");
-                        _movieService.DeleteMovieMenu();
+                        _menuService.DeleteMovieMenu();
                         break;
-                    case Menu.MenuOptions.SearchMovie:
-                        _logger.LogInformation("Searching for a movie");
-                        _movieService.SearchMovieMenu();
-                        break;
-                    case Menu.MenuOptions.AddUser:
-                        _logger.LogInformation("Adding a new User.");
-                        _movieService.AddNewUserMenu();
-                        break;
+
                 }
             }
             while (menuChoice != Menu.MenuOptions.Exit);

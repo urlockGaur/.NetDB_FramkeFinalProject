@@ -21,9 +21,9 @@ namespace MovieLibraryEntities.Dao
         UserMovie AddUserRating(long userId, long movieId, long rating);
         void DisplayUserMovieRating(long userId, long movieId);
 
-        List<(long Age, Movie TopRatedMovie)> GetTopRatedMoviesByAge();
+        List<(string AgeBracket, Movie TopRatedMovie, long Rating)> GetTopRatedMoviesByAge();
 
-        List<(string Occupation, Movie TopRatedMovie)> GetTopRatedMoviesByOccupation();
+        List<(string Occupation, Movie TopRatedMovie, long Rating)> GetTopRatedMoviesByOccupation();
 
 
     }
