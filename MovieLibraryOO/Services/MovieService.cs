@@ -224,6 +224,76 @@ namespace MovieLibraryOO.Services
                 AnsiConsole.MarkupLine(errorMessage);
             }
         }
+
+        public void AddNewUserMenu()
+        {
+            try
+            {
+                AnsiConsole.WriteLine("[green]Add New User Module[/]");
+                AnsiConsole.WriteLine("[green]-------------------------[/]");
+                AnsiConsole.WriteLine("Enter [green]First[/] Name: ");
+                var firstName = Console.ReadLine();
+
+                AnsiConsole.WriteLine("Enter [green]Last[/] Name: ");
+                var lastName = Console.ReadLine();
+
+                AnsiConsole.WriteLine("Enter user's [green]Age[/]: ");
+                if (long.TryParse(Console.ReadLine(), out long age))
+                {
+                    AnsiConsole.WriteLine("Enter user [green]Gender[/]: ");
+                    var gender = Console.ReadLine();
+
+                    AnsiConsole.WriteLine("Enter user [green]Occupation[/]: ");
+                    var occupation = Console.ReadLine();
+
+                    AnsiConsole.WriteLine("Enter user [green]Street Address[/]: ");
+                    var streetAddress = Console.ReadLine();
+
+                    AnsiConsole.WriteLine("Enter user [green]City[/]: ");
+                    var city = Console.ReadLine();
+
+                    AnsiConsole.WriteLine("Enter user [green]State[/]");
+                    var state = Console.ReadLine();
+
+                    AnsiConsole.WriteLine("Enter user [green]Zip Code[/]: ");
+                    var zipcode = Console.ReadLine();
+
+                    var newUser = _repository.AddNewUser(firstName, lastName, age, gender, occupation, streetAddress, city, state, zipcode);
+
+                    if (newUser != null)
+                    {
+                        _logger.LogInformation("New user successfully added to the database.");
+                        AnsiConsole.WriteLine("[green]User Added! Success![/]");
+                        DisplayUserDetailsMenu(newUser.Id);
+                    }
+                    else
+                    {
+                        AnsiConsole.WriteLine("[red]User was not added. Please review input and try again...[/]");
+                    }
+                }
+                else { AnsiConsole.WriteLine("[red]Invalid Age input. Please enter a valid numeric Age.[/]");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in the AddNewUserMenu");
+                AnsiConsole.WriteLine($"[red]An error occurred: {ex.Message}[/]");
+            }
+        }
+
+        public void DisplayUserDetailsMenu(long userId)
+        {
+            try
+            {
+                AnsiConsole.WriteLine("[green]Displaying User Details:[/] ");
+                _repository.DisplayUserDetails(userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in DisplayUserDetailsMenu...");
+                AnsiConsole.WriteLine($"[red]An error occurred: {ex.Message}[/]");
+            }
+        }
     }
 }
 

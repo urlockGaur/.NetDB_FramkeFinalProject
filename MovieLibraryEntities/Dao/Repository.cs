@@ -190,7 +190,7 @@ namespace MovieLibraryEntities.Dao
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error adding the new user: {ex.Message}";
+                    Console.WriteLine($"Error adding the new user: {ex.Message}");
                     return null;
                 }
             }
@@ -202,7 +202,30 @@ namespace MovieLibraryEntities.Dao
 
         public void DisplayUserDetails(long userId)
         {
-
+            try
+            {
+                var user = _context.Users.Include(u => u.UserDetail).Include(u => u.Occupation).FirstOrDefault(u => u.Id == userId);
+                if (user != null)
+                {
+                    Console.WriteLine($"User Details:");
+                    Console.WriteLine($"Name: {user.UserDetail.FirstName} {user.UserDetail.LastName}");
+                    Console.WriteLine($"Age: {user.Age}");
+                    Console.WriteLine($"Gender: {user.Gender}");
+                    Console.WriteLine($"Occupation: {user.Occupation.Name}");
+                    Console.WriteLine($"Street Address: {user.UserDetail.StreetAddress}");
+                    Console.WriteLine($"City: {user.UserDetail.City}");
+                    Console.WriteLine($"State: {user.UserDetail.State}");
+                    Console.WriteLine($"Zip Code: {user.ZipCode}");
+                }
+                else
+                {
+                    Console.WriteLine("User not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error displaying user details: {ex.Message}");
+            }
         }
     }
 }

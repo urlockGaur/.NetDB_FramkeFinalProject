@@ -59,7 +59,7 @@ namespace MovieLibraryOO.Services
                         break;
                     case Menu.MenuOptions.AddUser:
                         _logger.LogInformation("Adding a new User.");
-                        _movieService.AddUserMenu();
+                        _movieService.AddNewUserMenu();
                         break;
                 }
             }

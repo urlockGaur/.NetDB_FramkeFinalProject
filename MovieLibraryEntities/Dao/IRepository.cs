@@ -14,5 +14,8 @@ namespace MovieLibraryEntities.Dao
         void DeleteMovie(long movieIdDelete);
 
         Movie UpdateMovie(long movieId, string updatedMovieTitle, DateTime updatedReleaseDate);
+
+        User AddNewUser(string firstName, string lastName, long age, string gender, string zipcode, string streetAddress, string city, string state, string occupation);
+        void DisplayUserDetails(long userId);
     }
 }
