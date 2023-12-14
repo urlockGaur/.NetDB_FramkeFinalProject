@@ -144,7 +144,7 @@ namespace MovieLibraryOO.Services
                 Console.WriteLine();
 
 
-                Console.WriteLine("Please enter your search terms: ");
+                AnsiConsole.MarkupLine("Please enter your [green]search terms:[/] ");
 
                 var searchTerm = Console.ReadLine();
 
@@ -158,16 +158,14 @@ namespace MovieLibraryOO.Services
 
                     foreach (var movie in movies)
                     {
-                        AnsiConsole.MarkupLine($"[green]Title:[/] {movie.Title} [green]Release Date: [/]{movie.ReleaseDate}");
-                        
-
+                        var genre = movie.MovieGenres.Select(x => x.Genre.Name);
+                        var genreDisplay = string.Join(", ", genre);
+                        AnsiConsole.MarkupLine($"[green]Title:[/] {movie.Title} [green]|[/] [green]Release Date: [/]{movie.ReleaseDate} [green]|[/] [green]Genres:[/] {genreDisplay}");                        
                     }
                 }
                 else
                 {
-                     AnsiConsole.MarkupLine("[red]Movie not found. Please check your input and try again.[/]");
-                    
-
+                     AnsiConsole.MarkupLine("[red]Movie not found. Please check your input and try again.[/]");                    
                 }
             }
             catch
@@ -192,12 +190,28 @@ namespace MovieLibraryOO.Services
                 {
                     
                     int moviesPerPage = 10;
+                    AnsiConsole.MarkupLine("[green]Movie Library Menu: [/]");
+                    Console.WriteLine("----------------------------------------------");
+                    AnsiConsole.MarkupLine("[green]1.[/] View all Movies");
+                    AnsiConsole.MarkupLine("[green]2.[/] View Movies by Page");
+                    AnsiConsole.MarkupLine("Make a selection [green](1 or 2)[/]:");
+
+                    var userInput = Console.ReadLine();
+
+                    if (userInput == "1")
+                    {
+                        foreach (var movie in movieList)
+                        {
+                            string genre = string.Join(", ", movie.MovieGenres.Select(x => x.Genre.Name));
+                            AnsiConsole.MarkupLine($"[green]Id:[/] {movie.Id} | [green]Title:[/] {movie.Title} | [green]Release Date:[/] {movie.ReleaseDate.ToString("MM/dd/yyy")} | [green]Genres:[/] {genre}");
+                        }
+                    }
 
                     for (int i = 0; i < movieList.Count(); i += moviesPerPage)
                     {
-                        var moviesGroup = movieList.Skip(i).Take(moviesPerPage);
+                        var moviesList = movieList.Skip(i).Take(moviesPerPage);
 
-                        foreach (var movie in moviesGroup)
+                        foreach (var movie in moviesList)
                         {
                             string genre = string.Join(", ", movie.MovieGenres.Select(x => x.Genre.Name));
                             AnsiConsole.MarkupLine($"[green]Id:[/] {movie.Id} | [green]Title:[/] {movie.Title} | [green]Release Date:[/] {movie.ReleaseDate.ToString("MM/dd/yyy")} | [green]Genres:[/] {genre}");
@@ -205,9 +219,9 @@ namespace MovieLibraryOO.Services
                         }
                         Console.WriteLine();
                         AnsiConsole.MarkupLine("[green]Press enter to view more movies or type [red]'exit'[/] to stop...[/]");
-                        var userInput = Console.ReadLine();
+                        var userInputExit = Console.ReadLine();
 
-                        if (userInput.ToLower() == "exit")
+                        if (userInputExit.ToLower() == "exit")
                         {
                             AnsiConsole.Clear();
                             break;
@@ -215,6 +229,10 @@ namespace MovieLibraryOO.Services
                         AnsiConsole.Clear();
                     }
                               
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[red]Invalid selection. Please enter either '1' or '2'.[/]");
                 }
             }
             catch (Exception ex)
@@ -239,7 +257,7 @@ namespace MovieLibraryOO.Services
                 AnsiConsole.MarkupLine("Enter user's [green]Age[/]: ");
                 if (long.TryParse(Console.ReadLine(), out long age))
                 {
-                    AnsiConsole.MarkupLine("Enter user [green]Gender[/]: ");
+                    AnsiConsole.MarkupLine("Enter user [green]Gender ('M'/'F')[/]: ");
                     var gender = Console.ReadLine();
 
                     AnsiConsole.MarkupLine("Enter user [green]Occupation[/]: ");
@@ -389,7 +407,7 @@ namespace MovieLibraryOO.Services
             if (topRatedMovies.Any())
             {
                 foreach (var result in topRatedMovies)
-                {
+                {                   
                     AnsiConsole.MarkupLine($"[green]{result.Item1}:[/] [green]{result.Item2.Title}:[/] | [green]Rating:[/] {result.Rating}");
                 }
             }    
@@ -401,7 +419,7 @@ namespace MovieLibraryOO.Services
             {
                 foreach (var result in topRatedMovies)
                 {
-                    AnsiConsole.MarkupLine($"[green]{result.Occupation.Name}:[/] [green]{result.TopRatedMovie.Title}:[/] | [green]Rating:[/] {result.Rating}");
+                    AnsiConsole.MarkupLine($"[green]Occupation:[/] {result.Occupation.Name} | [green]Title:[/] {result.TopRatedMovie.Title} | [green]Rating:[/] {result.Rating}");
                 }
             }
         }

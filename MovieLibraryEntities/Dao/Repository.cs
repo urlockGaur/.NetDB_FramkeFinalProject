@@ -172,7 +172,7 @@ namespace MovieLibraryEntities.Dao
         // ========================================================
         // =C Level Requirement=
         // =Add User - Display User Details=
-        public User AddNewUser(string firstName, string lastName, long age, string gender, string zipcode, string streetAddress, string city, string state, string occupation)
+        public User AddNewUser(string firstName, string lastName, long age, string gender, string occupation, string streetAddress, string city, string state, string zipcode)
         {
             using (var db = new MovieContext())
             {
@@ -324,14 +324,14 @@ namespace MovieLibraryEntities.Dao
         public List<(string AgeBracket, Movie TopRatedMovie, long Rating)> GetTopRatedMoviesByAge()
         {
             var ageBrackets = new List<(long minAge, long maxAge, string AgeBracket)>
-    {
-        (0, 17, "Under 18"),
-        (18, 24, "18-24"),
-        (25, 34, "25-34"),
-        (35, 44, "35-44"),
-        (45, 54, "45-54"),
-        (55, long.MaxValue, "55+"),
-    };
+            {
+                (0, 17, "Under 18"),
+                (18, 24, "18-24"),
+                (25, 34, "25-34"),
+                (35, 44, "35-44"),
+                (45, 54, "45-54"),
+                (55, long.MaxValue, "55+"),
+            };
 
             var results = ageBrackets
                 .Select(bracket => (
@@ -352,10 +352,10 @@ namespace MovieLibraryEntities.Dao
                 .ToList();
 
             // Log information for debugging
-            foreach (var result in results)
-            {
-                Console.WriteLine($"AgeBracket: {result.AgeBracket}, TopRatedMovie: {result.TopRatedMovie?.Title}, Rating: {result.Rating}");
-            }
+            //foreach (var result in results)
+           // {
+               // Console.WriteLine($"AgeBracket: {result.AgeBracket}, TopRatedMovie: {result.TopRatedMovie?.Title}, Rating: {result.Rating}");
+            //}
 
             return results;
         }
