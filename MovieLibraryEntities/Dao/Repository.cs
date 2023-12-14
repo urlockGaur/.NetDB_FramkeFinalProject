@@ -169,5 +169,40 @@ namespace MovieLibraryEntities.Dao
 
             return temp;
         }
+
+        // ========================================================
+        // =C Level Requirement=
+        // =Add User - Display User Details=
+
+        public User AddNewUser(string firstName, string lastName, long age, string gender, string zipcode, string streetAddress, string city, string state, string occupation)
+        {
+            using (var db = new MovieContext())
+            {
+                var newOccupation = new Occupation { Name = occupation };
+                var newUserDetail = new UserDetail { FirstName = firstName, LastName = lastName, StreetAddress = streetAddress, City = city, State = state, };
+                var newUser = new User { Age = age, Gender = gender, ZipCode = zipcode, UserDetail = newUserDetail, Occupation = newOccupation};
+
+                try
+                {
+                    _context.Users.Add(newUser);
+                    _context.SaveChanges();
+                    return newUser;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error adding the new user: {ex.Message}";
+                    return null;
+                }
+            }
+        }
+
+        // ========================================================
+        // =C Level Requirement=
+        // =Add User - Display User Details=
+
+        public void DisplayUserDetails(long userId)
+        {
+
+        }
     }
 }

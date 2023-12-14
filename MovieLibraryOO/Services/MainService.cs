@@ -41,12 +41,12 @@ namespace MovieLibraryOO.Services
                         _movieService.DisplayMovieLibraryMenu();
                         break;                 
                     case Menu.MenuOptions.AddMovie:
-                        _logger.LogInformation("Adding a New Movie");
+                        _logger.LogInformation("Adding a N=new Movie");
                         _movieService.AddNewMovieMenu();
                         //menu.GetUserInput();
                         break;
                     case Menu.MenuOptions.UpdateMovie:
-                        _logger.LogInformation("Updating an Existing Movie");
+                        _logger.LogInformation("Updating an existing Movie");
                         _movieService.UpdateMovieMenu();
                         break;
                     case Menu.MenuOptions.DeleteMovie:
@@ -56,6 +56,10 @@ namespace MovieLibraryOO.Services
                     case Menu.MenuOptions.SearchMovie:
                         _logger.LogInformation("Searching for a movie");
                         _movieService.SearchMovieMenu();
+                        break;
+                    case Menu.MenuOptions.AddUser:
+                        _logger.LogInformation("Adding a new User.");
+                        _movieService.AddUserMenu();
                         break;
                 }
             }
