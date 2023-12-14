@@ -198,10 +198,10 @@ namespace MovieLibraryEntities.Dao
                 }
         }
     
-    // ========================================================
-    // =C Level Requirement=
-    // =Add User - Display User Details=
-    public void DisplayUserDetails(long userId)
+        // ========================================================
+        // =C Level Requirement=
+        // =Add User - Display User Details=
+        public void DisplayUserDetails(long userId)
         {
             try
             {
