@@ -174,14 +174,19 @@ namespace MovieLibraryEntities.Dao
         // =Add User - Display User Details=
         public User AddNewUser(string firstName, string lastName, long age, string gender, string occupation, string streetAddress, string city, string state, string zipcode)
         {
-            using (var db = new MovieContext())
-            {
-                var newOccupation = new Occupation { Name = occupation };
-                var newUserDetail = new UserDetail { FirstName = firstName, LastName = lastName, StreetAddress = streetAddress, City = city, State = state, };
-                var newUser = new User { Age = age, Gender = gender, ZipCode = zipcode, UserDetail = newUserDetail, Occupation = newOccupation };
-
+            using (var _context = new MovieContext())
                 try
                 {
+                    var occupationExists = _context.Occupations.FirstOrDefault(x => x.Name.ToUpper() == occupation);
+                    var newOccupation = occupationExists ?? new Occupation { Name = occupation };
+                    var newUserDetail = new UserDetail { FirstName = firstName, LastName = lastName, StreetAddress = streetAddress, City = city, State = state, };
+                    var newUser = new User { Age = age, Gender = gender, ZipCode = zipcode, UserDetail = newUserDetail, Occupation = newOccupation };
+
+                    //if occupation is new - add to the context
+                    if (occupationExists == null)
+                    {
+                        _context.Occupations.Add(newOccupation);
+                    }
                     _context.Users.Add(newUser);
                     _context.SaveChanges();
                     return newUser;
@@ -191,13 +196,12 @@ namespace MovieLibraryEntities.Dao
                     Console.WriteLine($"Error adding the new user: {ex.Message}");
                     return null;
                 }
-            }
         }
-
-        // ========================================================
-        // =C Level Requirement=
-        // =Add User - Display User Details=
-        public void DisplayUserDetails(long userId)
+    
+    // ========================================================
+    // =C Level Requirement=
+    // =Add User - Display User Details=
+    public void DisplayUserDetails(long userId)
         {
             try
             {
