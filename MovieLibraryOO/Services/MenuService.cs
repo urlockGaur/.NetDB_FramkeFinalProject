@@ -322,8 +322,8 @@ namespace MovieLibraryOO.Services
                     Console.WriteLine("Enter the Id of the movie: ");
                     if (long.TryParse(Console.ReadLine(), out long movieId))
                     {
-                        Console.WriteLine("Enter the rating for the movie: ");
-                        if (long.TryParse(Console.ReadLine(), out long rating))
+                        Console.WriteLine("Enter the rating for the movie ( 1 - 5 ): ");
+                        if (long.TryParse(Console.ReadLine(), out long rating) && rating >= 1 && rating <= 5)
                         {
                             var userRating = _repository.AddUserRating(userId, movieId, rating);
 

@@ -30,8 +30,8 @@ namespace MovieLibraryOO
             { MenuOptions.UpdateMovie,"Update Movie Data"  },            
             { MenuOptions.SearchMovie,"Search for Movie"  },
             { MenuOptions.DisplayMovieLibrary,"Display Movie Library"  },
-            { MenuOptions.RateMovie, "Rate Movie" },
-            { MenuOptions.ListTopRatedMovie, "Display Top Rated" },
+            { MenuOptions.RateMovie, "Rate a Movie" },
+            { MenuOptions.ListTopRatedMovie, "Display Top Rated Movies" },
             { MenuOptions.DeleteMovie,"Delete Movie"  },
             { MenuOptions.Exit,"Exit"  }
         };
