@@ -227,5 +227,72 @@ namespace MovieLibraryEntities.Dao
                 Console.WriteLine($"Error displaying user details: {ex.Message}");
             }
         }
+
+
+
+        public UserMovie AddUserRating(long userId, long movieId, long rating)
+        {
+            var userRating = new UserMovie
+            {                         
+                Rating = rating,
+                RatedAt = DateTime.Now
+            };
+
+            try
+            {
+                //grab User and Movie entities
+                var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+                var movie = _context.Movies.FirstOrDefault(u => u.Id == movieId);
+                
+                if (user != null  && movie != null)
+                {
+                    userRating.User = user;
+                    userRating.Movie = movie;
+
+                    _context.UserMovies.Add(userRating);
+                    _context.SaveChanges();
+                    return userRating;
+                }
+                else
+                {
+                    Console.WriteLine("User or Movie not found...");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding user rating: {ex.Message}");
+                return null;
+            }
+        }
+        public void DisplayUserMovieRating(long userId, long movieId)
+        {
+            var userMovieRating = _context.UserMovies.Include(u => u.User)
+                .Include(u => u.Movie)
+                .FirstOrDefault(u => u.Id == userId && u.Movie.Id == movieId);
+
+            if (userMovieRating != null)
+            {
+                Console.WriteLine("User Details: ");
+                Console.WriteLine("-------------------------");
+                Console.WriteLine($"Username: {}");
+                Console.WriteLine($"Age: {}");
+                Console.WriteLine($"Occupation: {}");
+                Console.WriteLine("-------------------------");
+
+                Console.WriteLine();
+
+                Console.WriteLine("Movie Details: ");
+                Console.WriteLine("-------------------------");
+                Console.WriteLine($"Title: {userMovieRating.Movie.Title}");
+                Console.WriteLine($"Release Date: {userMovieRating.Movie.ReleaseDate}");
+                Console.WriteLine($"Rating: {userMovieRating.Rating}");
+                Console.WriteLine($"Rated At: {userMovieRating.RatedAt.ToString("MM/dd/yyyy HH:mm:ss")}");
+                Console.WriteLine("-------------------------");
+
+            }
+            else { Console.WriteLine("User movie rating not found...");
+            
+        }
     }
 }

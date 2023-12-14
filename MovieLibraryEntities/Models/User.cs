@@ -6,6 +6,7 @@
         public long Age { get; set; }
         public string Gender { get; set; }
         public string ZipCode { get; set; }
+        public string Username { get; set; }
 
         public virtual UserDetail? UserDetail { get; set; }
         public virtual Occupation Occupation { get; set; }

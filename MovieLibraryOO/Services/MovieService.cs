@@ -294,6 +294,55 @@ namespace MovieLibraryOO.Services
                 AnsiConsole.WriteLine($"[red]An error occurred: {ex.Message}[/]");
             }
         }
+
+        public void AddUserRatingMenu()
+        {
+            try
+            {
+                Console.WriteLine("Enter the Id of the user: ");
+                if (long.TryParse(Console.ReadLine(), out long userId))
+                {
+                    Console.WriteLine("Enter the Id of the movie: ");
+                    if (long.TryParse(Console.ReadLine(), out long movieId))
+                    {
+                        Console.WriteLine("Enter the rating for the movie: ");
+                        if (long.TryParse(Console.ReadLine(), out long rating))
+                        {
+                            var userRating = _repository.AddUserRating(userId, movieId, rating);
+
+                            if (userRating != null)
+                            {
+                                _logger.LogInformation("User rating added succesfully!");
+                                _repository.DisplayUserMovieRating(userId, movieId);
+                            }
+                            else
+                            {
+                                _logger.LogError("User rating add failed...");
+                                AnsiConsole.WriteLine("[red]User rating could not be added. Review the input and try again...[/]");
+                            }
+                        }
+                        else
+                        {
+                            AnsiConsole.WriteLine("[red]Invalid rating. Please enter a valid numeric rating.[/]");
+                        }
+            
+                    }
+                    else
+                    {
+                        AnsiConsole.WriteLine("[red]Invalid movie Id. Please enter a valid numeric movie Id.[/]");
+                    }
+                }
+                else 
+                { 
+                    AnsiConsole.WriteLine("[red]Invalid user Id. Please enter a valid numeric user Id.[/]"); 
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred in AddUserRatingMenu.");
+                AnsiConsole.WriteLine($"[red]An error occurredL {ex.Message}[/]");
+            }
+        }
     }
 }
 

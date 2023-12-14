@@ -60,5 +60,22 @@ public class MovieContext : DbContext
         //}
 
         //modelBuilder.Entity<UserDetail>().HasData(userDetails);
+
+
+
+        //Code for generating fake usernames only. Did not use the above in initial migration round.
+
+        var users = new List<User>();
+
+        for (var i = 1; i < 943;  i++)
+        {
+            users.Add(new User()
+            {
+                Id = i,
+                Username = Faker.Internet.UserName()
+            });
+        }
+
+        modelBuilder.Entity<User>().HasData(users);
     }
 }

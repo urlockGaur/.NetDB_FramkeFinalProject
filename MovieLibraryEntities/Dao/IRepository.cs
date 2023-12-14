@@ -17,5 +17,10 @@ namespace MovieLibraryEntities.Dao
 
         User AddNewUser(string firstName, string lastName, long age, string gender, string zipcode, string streetAddress, string city, string state, string occupation);
         void DisplayUserDetails(long userId);
+
+        UserMovie AddUserRating(long userId, long movieId, long rating);
+        void DisplayUserMovieRating(long userId, long movieId);
+
+
     }
 }

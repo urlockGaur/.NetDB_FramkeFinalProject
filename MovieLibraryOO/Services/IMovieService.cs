@@ -15,5 +15,7 @@ namespace MovieLibraryOO.Services
         void DisplayMovieLibraryMenu();
         void AddNewUserMenu();
         void DisplayUserDetailsMenu(long userId);
+
+        public void AddUserRatingMenu();
     }
 }
