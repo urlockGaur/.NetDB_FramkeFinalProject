@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieLibraryEntities.Context;
 using MovieLibraryEntities.Models;
+using System.Text.RegularExpressions;
 
 namespace MovieLibraryEntities.Dao
 {
@@ -9,10 +10,10 @@ namespace MovieLibraryEntities.Dao
         private readonly IDbContextFactory<MovieContext> _contextFactory;
         private readonly MovieContext _context;
 
-       // public Repository(MovieContext dbContext)
-       // {
-       //_context = dbContext;
-       // }
+        // public Repository(MovieContext dbContext)
+        // {
+        //_context = dbContext;
+        // }
         public Repository(IDbContextFactory<MovieContext> contextFactory)
         {
             _contextFactory = contextFactory;
@@ -24,7 +25,7 @@ namespace MovieLibraryEntities.Dao
             _context.Dispose();
         }
 
-        
+
 
         // ========================================================
         // =Helper Method=
@@ -130,7 +131,7 @@ namespace MovieLibraryEntities.Dao
             {
                 movieToUpdate.Title = updatedMovieTitle;
                 movieToUpdate.ReleaseDate = updatedReleaseDate;
-            
+
                 try
                 {
                     _context.SaveChanges();
@@ -173,14 +174,13 @@ namespace MovieLibraryEntities.Dao
         // ========================================================
         // =C Level Requirement=
         // =Add User - Display User Details=
-
         public User AddNewUser(string firstName, string lastName, long age, string gender, string zipcode, string streetAddress, string city, string state, string occupation)
         {
             using (var db = new MovieContext())
             {
                 var newOccupation = new Occupation { Name = occupation };
                 var newUserDetail = new UserDetail { FirstName = firstName, LastName = lastName, StreetAddress = streetAddress, City = city, State = state, };
-                var newUser = new User { Age = age, Gender = gender, ZipCode = zipcode, UserDetail = newUserDetail, Occupation = newOccupation};
+                var newUser = new User { Age = age, Gender = gender, ZipCode = zipcode, UserDetail = newUserDetail, Occupation = newOccupation };
 
                 try
                 {
@@ -199,7 +199,6 @@ namespace MovieLibraryEntities.Dao
         // ========================================================
         // =C Level Requirement=
         // =Add User - Display User Details=
-
         public void DisplayUserDetails(long userId)
         {
             try
@@ -228,12 +227,13 @@ namespace MovieLibraryEntities.Dao
             }
         }
 
-
-
+        // ========================================================
+        // =B Level Requirement=
+        // =Ask User to enter rating on existing movie - Display details = user, rated movie, rating=
         public UserMovie AddUserRating(long userId, long movieId, long rating)
         {
             var userRating = new UserMovie
-            {                         
+            {
                 Rating = rating,
                 RatedAt = DateTime.Now
             };
@@ -243,8 +243,8 @@ namespace MovieLibraryEntities.Dao
                 //grab User and Movie entities
                 var user = _context.Users.FirstOrDefault(u => u.Id == userId);
                 var movie = _context.Movies.FirstOrDefault(u => u.Id == movieId);
-                
-                if (user != null  && movie != null)
+
+                if (user != null && movie != null)
                 {
                     userRating.User = user;
                     userRating.Movie = movie;
@@ -265,6 +265,10 @@ namespace MovieLibraryEntities.Dao
                 return null;
             }
         }
+
+        // ========================================================
+        // =B Level Requirement=
+        // =Ask User to enter rating on existing movie - Display details = user, rated movie, rating=
         public void DisplayUserMovieRating(long userId, long movieId)
         {
             var userMovieRating = _context.UserMovies.Include(u => u.User)
@@ -275,9 +279,9 @@ namespace MovieLibraryEntities.Dao
             {
                 Console.WriteLine("User Details: ");
                 Console.WriteLine("-------------------------");
-                Console.WriteLine($"Username: {}");
-                Console.WriteLine($"Age: {}");
-                Console.WriteLine($"Occupation: {}");
+                Console.WriteLine($"User Id: {userMovieRating.User.UserDetail.UserId}");
+                Console.WriteLine($"Age: {userMovieRating.User.Age}");
+                Console.WriteLine($"Occupation: {userMovieRating.User.Occupation}");
                 Console.WriteLine("-------------------------");
 
                 Console.WriteLine();
@@ -292,7 +296,46 @@ namespace MovieLibraryEntities.Dao
 
             }
             else { Console.WriteLine("User movie rating not found...");
-            
+
+            }
         }
+
+        // ========================================================
+        // =A Level Requirement=
+        // =List top rated movie by age bracket or occupation - Sort alphabetically and by rating and display just the first movie=
+        public List<(long Age, Movie TopRatedMovie)> GetTopRatedMoviesByAge()
+        {
+            var topRateMoviesByAge = _context.UserMovies
+                .Include(u => u.Movie)
+                .Include(u => u.User)
+                .GroupBy(u => u.User.Age)
+                .Select(u => new
+                {
+                    Age = u.Key,
+                    TopRatedMovie = u.OrderByDescending(u  => u.Rating).Select(u => u.Movie).FirstOrDefault()
+                })
+                .ToList();
+            return topRateMoviesByAge.Select(movie => (movie.Age, movie.TopRatedMovie)).ToList();
+        }
+
+        // ========================================================
+        // =A Level Requirement=
+        // =List top rated movie by age bracket or occupation - Sort alphabetically and by rating and display just the first movie=
+        public List<(string Occupation, Movie TopRatedMovie)> GetTopRatedMoviesByOccupation()
+        {
+            var topRateMoviesByOccupation = _context.UserMovies
+                .Include(u => u.Movie)
+                .Include(u => u.User.Occupation)
+                .GroupBy(u => u.User.Occupation.Name)
+                .Select(u => new
+                {
+                    Occupation = u.Key,
+                    TopRatedMovie = u.OrderByDescending(u => u.Rating).Select(u => u.Movie).FirstOrDefault()
+                })
+                .ToList();
+            return topRateMoviesByOccupation.Select(movie => (movie.Occupation, movie.TopRatedMovie)).ToList();
+        }
+
     }
 }
+
